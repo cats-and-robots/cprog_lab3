@@ -129,8 +129,8 @@ int main(){
 	*/
 
 //	test_Room();
-	test_Player();
-
+//	test_Player();
+	test_attack();
 
 	return 0;
 }

@@ -117,5 +117,18 @@ void test_Player(){
 	p1->stats();
 	p1->show_inventory();
 }
+//////////////////////////////////////////////////////////////////
+void test_attack(){
+	std::unique_ptr<Fighter> er1(new EvilRobot("Evil Asimo"));
+	std::string input = "";
+	int temp = er1->attack();
+	std::getline(std::cin, input);
+	temp = er1->attack();
+	std::getline(std::cin, input);
+	temp = er1->attack();
+
+
+	temp+=1;
+}
 
 #endif /* TESTING_HPP_ */

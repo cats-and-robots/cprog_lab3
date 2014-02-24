@@ -8,18 +8,17 @@
 #ifndef EVILROBOT_HPP_
 #define EVILROBOT_HPP_
 
-#include <typeinfo>
+
 
 #include "Robot.hpp"
 #include "Weapon.hpp" //contains Item.hpp
 #include <memory>
-
+#include <fstream> //for file reading
 class EvilRobot:public Robot {
 
 protected:
 
 	std::unique_ptr<Object> item_;
-	std::string quizfile_;
 	void set_QuizFile(std::string file){
 		std::cout<<"setQuizFile got file: "<<file<<std::endl;
 	}
@@ -74,7 +73,28 @@ public:
 	}
 
 	virtual int attack() const{
-		std::cout<<"\nWill soon contain a quiz!\n";
+
+		//Generating an integer between 1 to max
+		int max = 4;
+		std::srand(time(NULL));
+		int nr = 1 + ( std::rand() % max );
+
+
+		//open and read file corresponding to the generated integer
+		std::string filename = "EvilRobotQuiz/"+std::to_string(nr)+".txt";
+		std::ifstream quizfile(filename);
+		std::string line;
+
+		if (quizfile.is_open()){
+			while ( std::getline (quizfile,line) ){
+				std::cout << line <<std::endl;
+		    }
+			quizfile.close();
+		}
+		else
+			std::cout << "Unable to open file ./" << filename <<std::endl;
+
+
 		return 1;
 	}
 
