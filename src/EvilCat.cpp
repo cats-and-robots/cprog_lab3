@@ -18,6 +18,11 @@ EvilCat::~EvilCat() {std::cout<<"Destroyed "<<type()<<" "<<name()<<std::endl;}
 std::string EvilCat::type() const{
 	return "EvilCat";
 }
+
 void EvilCat::talk(){
 	std::cout<<"\nkekekekek! *_*"<<"\n\n";
+}
+
+void EvilCat::stats() const{
+	std::cout<<"Name: " << name() << "\nType: "<< type() <<"\nHP: "<< current_HP() <<"/"<< max_HP_<<std::endl;
 }

@@ -19,8 +19,8 @@ public:
 
 	virtual std::string type() const;
 	virtual void talk();
+	virtual void stats() const;
 
-	friend std::ostream& operator<<(std::ostream&, const Animal&);
 };
 
 #endif /* EVILCAT_HPP_ */

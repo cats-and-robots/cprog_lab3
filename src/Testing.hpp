@@ -9,6 +9,7 @@
 #define TESTING_HPP_
 
 
+#include "Player.hpp"
 #include "Cat.hpp"
 #include "EvilCat.hpp"
 #include "Item.hpp"
@@ -16,7 +17,6 @@
 #include "CafeRobot.hpp"
 #include "EvilRobot.hpp"
 #include "Room.hpp"
-#include "Player.hpp"
 
 void test_Room(){
 	using UP_F = std::unique_ptr<Fighter>;
@@ -120,6 +120,21 @@ void test_Player(){
 	p1->equip_RH(std::move(temp_wep1));
 	p1->stats();
 	p1->show_inventory();
+
+	std::unique_ptr<Fighter> er1(new EvilRobot("Evil Asimo"));
+	std::unique_ptr<Fighter> ec1(new EvilCat("Evil Munchkin"));
+	std::unique_ptr<Fighter> c1(new Cat("Munchkin"));
+	std::unique_ptr<Fighter> cr1(new CafeRobot("R2D2"));
+
+	std::cout<<"\n\nWill fight with "<<ec1->name()<<std::endl;
+	ec1 = p1->fight( std::move(ec1) );
+	p1->stats();
+	ec1->stats();
+	er1->stats();
+	c1->stats();
+	cr1->stats();
+
+
 }
 //////////////////////////////////////////////////////////////////
 void test_attack(){

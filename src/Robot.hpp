@@ -22,12 +22,7 @@ public:
 	virtual void talk() = 0;
 
 	std::string baseType() const{return "Robot";}
-
-	friend std::ostream& operator<<(std::ostream& stream, const Robot& x){
-		stream <<"Name: "<< x.name() <<"\nType: " << x.type();
-		return stream;
-	}
-
+	virtual void stats() const{std::cout<<"Name: " << name() << "\nType: "<< type()<<std::endl;}
 
 };
 

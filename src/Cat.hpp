@@ -20,7 +20,6 @@ public:
 	virtual std::string type() const;
 	virtual void talk();
 
-	friend std::ostream& operator<<(std::ostream&, const Animal&);
 };
 
 #endif /* CAT_HPP_ */

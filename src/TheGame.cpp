@@ -128,8 +128,8 @@ int main(){
 
 	*/
 
-	test_Room();
-//	test_Player();
+//	test_Room();
+	test_Player();
 //	test_attack();
 //	test_FighterVector();
 

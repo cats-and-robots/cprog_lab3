@@ -18,7 +18,7 @@
 #include <fstream> //for file reading
 #include <sstream> //for stringsstream
 
-const unsigned int MAX = 4; //number of quiz-files in the EvilRobot folder
+static const unsigned int MAX = 4; //number of quiz-files in the EvilRobot folder
 
 struct Quiz{
 	std::string question_;
@@ -45,16 +45,8 @@ public:
 	virtual std::string type() const;
 	virtual int attack();
 	virtual void talk();
+	virtual void stats() const;
 	std::unique_ptr<Object> getItem();
-
-	friend std::ostream& operator<<(std::ostream& stream, const EvilRobot& x){
-		//std::string item_type = typeid(x.ITEM).name();
-		stream <<"Name: " << x.name() << "\nType: " << x.type()
-				<<"\nErrors: "<<x.current_HP_<<"\n";
-				//(ITEM != 0) ? *(x.ITEM) : "Empty";
-		return stream;
-	}
-
 
 };
 

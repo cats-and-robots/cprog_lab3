@@ -42,14 +42,10 @@ void Player::talk(){
 void Player::stats() const{
 	std::cout<<this->type()<<" "<<this->name()<<std::endl;
 	std::cout<<"HP: "<<current_HP_<<"/"<<max_HP_<<std::endl;
-	std::cout<<"ATK: "<<ATK_<<std::endl;
-	std::cout<<"DEF: "<<DEF_<<std::endl;
-	std::cout<<"Right hand: ";
-	if (RH_) std::cout<<RH_->name()<<std::endl;
-	else std::cout<<"-"<<std::endl;
-	std::cout<<"Left hand: ";
-	if (LH_) std::cout<<LH_->name()<<std::endl;
-	else std::cout<<"-"<<std::endl;
+	std::cout<<"ATK: "<<ATK_ + ( (RH_ != NULL) ? RH_->getATK() : 0 )  + ( (LH_ != NULL) ? LH_->getATK() : 0 ) <<std::endl;
+	std::cout<<"DEF: "<<DEF_ + ( (RH_ != NULL) ? RH_->getDEF() : 0 )  + ( (LH_ != NULL) ? LH_->getDEF() : 0 ) <<std::endl;
+	std::cout<<"Right hand: " << ( (RH_ != NULL) ? RH_->name() : "-" )<<std::endl;
+	std::cout<<"Left hand: "  << ( (LH_ != NULL) ? LH_->name() : "-" )<<std::endl;
 }
 
 void Player::equip_RH(std::unique_ptr<Object> r_wep){
@@ -64,10 +60,56 @@ std::unique_ptr<Object> Player::unequip_RH(){
 std::unique_ptr<Object> Player::unequip_LH(){
 	return std::move(LH_);
 }
-//void fight(std::vector< std::unique_ptr<Animal> > animals, std::vector< std::unique_ptr<Robot> > robots ){
-//	if (animals && robots){
-//
-//	}
-//
-//}
+std::unique_ptr<Fighter> Player::fight(std::unique_ptr<Fighter> actor){
+	if (actor->type() == "EvilRobot"){
+		int quiz_result = actor->attack();
+		/* For different values from calling attack()
+		 * 0 = you gave a correct answer and inflicted damage on the robot!
+		 * 1 = you gave an incorrect answer and will lose half of your max_HP
+		 * -1 = you gave an incorrect answer and will lose all you HP
+		 * */
+		if (quiz_result == 0)
+			actor->takeDamage(1);
+		else if (quiz_result == 1){
+			int half_max_HP = (int)ceil( (float)max_HP_ / 2 );
+			this->takeDamage(half_max_HP);
+		}
+		else if (quiz_result == -1)
+			this->takeDamage(max_HP_);
+	}
+	//For all other creatures that you will fight
+	else{
+		std::srand(time(NULL));
+		int random_start = rand() % 2; //0 or 1
+		int damage;
+		if (random_start == 1){
+			std::cout<< this->name() <<" attacks first!" <<std::endl;
+			damage = this->attack();
+			actor->takeDamage(damage);
+			std::cout<< this->name() <<" inflicted "<< actor->name() <<
+					" with "<< damage << " damage-points!" <<std::endl;
+			if (actor->current_HP() > 0){
+				damage = actor->attack();
+				this->takeDamage(damage);
+				std::cout<< actor->name() <<" inflicted "<< this->name() <<
+						" with "<< damage << " damage-points!" <<std::endl;
+			}
+		}
+		else if (random_start == 0){
+			std::cout<<actor->name() <<" attacks first!" <<std::endl;
+			damage = actor->attack();
+			this->takeDamage(damage);
+			std::cout<< actor->name() <<" inflicted "<< this->name() <<
+					" with "<< damage << " damage-points!" <<std::endl;
+			if (this->current_HP() > 0){
+				damage = this->attack();
+				actor->takeDamage(damage);
+				std::cout<< this->name() <<" inflicted "<< actor->name() <<
+						" with "<< damage << " damage-points!" <<std::endl;
+			}
+		}
+	}
+
+	return std::move(actor);
+}
 

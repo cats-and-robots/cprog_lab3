@@ -109,6 +109,10 @@ void EvilRobot::talk(){
 	std::cout<<"\n*BLIP-BLOP* Solve my quizzes!!! *BUZZ*"<<"\n\n";
 }
 
+void EvilRobot::stats() const{
+	std::cout<<"Name: " << name() << "\nType: "<< type() <<"\nHP: "<< current_HP() <<"/"<< max_HP_<<std::endl;
+}
+
 std::unique_ptr<Object> EvilRobot::getItem(){
 	return std::move(item_);
 }
@@ -133,20 +137,17 @@ void EvilRobot::loadQuizzes(){
 				if (found_ans_pos!=std::string::npos){
 					int start_substr = found_ans_pos+code_for_answer.length();
 					std::string answer = line.substr(start_substr);
-					//std::cout<<"Answer:"<<answer<<"."<<std::endl;
 					newQuiz->answer_=answer;
 					newQuiz->options_.push_back(answer);
 				}
 				else if (found_alt_pos!=std::string::npos){
 					int start_substr = found_alt_pos+code_for_alt.length();
 					std::string alt = line.substr(start_substr);
-					//std::cout<<"Alt:"<<alt<<"."<<std::endl;
 					newQuiz->options_.push_back(alt);
 				}
 				else{
 					newQuiz->question_ += line + '\n';
 				}
-
 			}
 
 			//shuffle options before saving
@@ -156,7 +157,6 @@ void EvilRobot::loadQuizzes(){
 		}
 		else
 			std::cout << "Unable to open file ./" << filename <<std::endl;
-
 
 	}
 	//shuffle quizzes

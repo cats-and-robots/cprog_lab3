@@ -21,13 +21,8 @@ public:
 	virtual std::string baseType() const{return "Animal";}
 	virtual int attack() {return ATK_;}
 	virtual void talk() = 0;
+	virtual void stats() const{std::cout<<"Name: " << name() << "\nType: "<< type()<<std::endl;}
 
-
-	friend std::ostream& operator<<(std::ostream& stream, const Animal& x){
-		stream <<"Name: " << x.name() << "\nType: "<< x.type() <<"\nHP: "
-				<< x.current_HP() <<"/"<<x.max_HP_;
-		return stream;
-	}
 };
 
 

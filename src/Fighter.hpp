@@ -22,10 +22,10 @@ public:
 	virtual std::string baseType() const = 0;
 	virtual int attack() =0;
 	virtual void talk() = 0;
+	virtual void stats() const = 0;
 	int current_HP() const{return current_HP_;}
 	void takeDamage(int d){current_HP_-=d;}
 	std::string name() const{return name_;}
-
 };
 
 #endif /* FIGHTER_HPP_ */

@@ -35,7 +35,6 @@ public:
 		else{
 			stream <<"Name: " << x.name() <<"\nType: "<< x.type() <<"\nInfo: "<< x.info();
 		}
-
 		return stream;
 	}
 

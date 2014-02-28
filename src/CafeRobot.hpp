@@ -19,7 +19,6 @@ public:
 	virtual int attack();
 	virtual void talk();
 
-	friend std::ostream& operator<<(std::ostream&, const Robot&);
 };
 
 #endif /* CAFEROBOT_HPP_ */
