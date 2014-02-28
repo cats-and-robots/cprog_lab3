@@ -16,7 +16,7 @@ public:
 	virtual ~CafeRobot();
 
 	virtual std::string type() const;
-	virtual int attack() const;
+	virtual int attack();
 	virtual void talk() const;
 
 	friend std::ostream& operator<<(std::ostream&, const Robot&);

@@ -20,7 +20,7 @@ public:
 	virtual ~Player();
 	virtual std::string type() const{return "Player";}
 	virtual std::string baseType() const{return "Fighter";}
-	virtual int attack() const;
+	virtual int attack();
 	virtual void talk() const;
 	void stats() const;
 	void equip_RH(std::unique_ptr<Object>);

@@ -20,7 +20,7 @@ Player::~Player() {
 	std::cout<<"Destroyed "<<this->type()<<" "<<this->name()<<std::endl;
 }
 
-int Player::attack() const{
+int Player::attack() {
 	int power = ATK_;
 	if (RH_) power+= RH_->getATK();
 	if (LH_) power+= LH_->getATK();

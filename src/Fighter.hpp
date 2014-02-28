@@ -20,7 +20,7 @@ public:
 	virtual ~Fighter(){};
 	virtual std::string type() const = 0;
 	virtual std::string baseType() const = 0;
-	virtual int attack() const=0;
+	virtual int attack() =0;
 	virtual void talk() const = 0;
 	int current_HP() const{return current_HP_;}
 	void takeDamage(int d){current_HP_-=d;}

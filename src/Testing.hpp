@@ -126,6 +126,11 @@ void test_attack(){
 	temp = er1->attack();
 	std::getline(std::cin, input);
 	temp = er1->attack();
+	std::getline(std::cin, input);
+	temp = er1->attack();
+	std::getline(std::cin, input);
+	temp = er1->attack();
+	std::getline(std::cin, input);
 
 
 	temp+=1;

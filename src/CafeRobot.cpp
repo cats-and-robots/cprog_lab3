@@ -21,7 +21,7 @@ std::string CafeRobot::type() const{
 	return "CafeRobot";
 }
 
-int CafeRobot::attack() const{
+int CafeRobot::attack(){
 	return ATK_;
 }
 

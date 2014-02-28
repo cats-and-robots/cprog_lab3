@@ -1,1 +1,8 @@
-file 3!
+Assume an object 1m away is visible in both left and right camera in a 
+stereo pair. Does the accuracy in the estimated distance to the object 
+typically improve, degrade or stay the same with increased base line 
+(ie when the distance between the cameras increases)?
+
+#ANSWER:Improved accuracy
+#ALT:Degrade accuracy
+#ALT:Stay the same
