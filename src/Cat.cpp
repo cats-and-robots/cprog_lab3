@@ -32,7 +32,7 @@ std::string Cat::type() const{
 	return "Cat";
 }
 
-void Cat::talk() const{
+void Cat::talk(){
 	std::cout<<"\nNnyyyaa nnnyyaaa! =^w^= \n\n";
 }
 

@@ -25,7 +25,7 @@ int CafeRobot::attack(){
 	return ATK_;
 }
 
-void CafeRobot::talk() const{
-	std::cout<<"\n*BLIP-BLOP* Todays special is soup with cat-hair *BUZZ*"<<"\n";
+void CafeRobot::talk(){
+	std::cout<<"\n*BLIP-BLOP* Todays special is soup with cat-hair *BUZZ*"<<"\n\n";
 }
 

@@ -19,35 +19,38 @@
 #include "Player.hpp"
 
 void test_Room(){
+	using UP_F = std::unique_ptr<Fighter>;
+	using UP_O = std::unique_ptr<Object>;
+	using SP_R = std::shared_ptr<Room>;
 
 	std::cout<<"\n------------Testing Room-class!------------"<<std::endl;
 
-	std::vector< std::shared_ptr<Room> > rooms_1;
-	std::vector< std::shared_ptr<Room> > rooms_2;
-	std::vector< std::shared_ptr<Room> > all_rooms;
+	std::vector< SP_R > rooms_1;
+	std::vector< SP_R > rooms_2;
+	std::vector< SP_R > all_rooms;
 
-	std::shared_ptr<Room> r1(new Room("Level 1"));
-	std::shared_ptr<Room> r2(new Room("Level 2"));
-	std::shared_ptr<Room> r3(new Room("Level 3"));
+	SP_R r1(new Room("Level 1"));
+	SP_R r2(new Room("Level 2"));
+	SP_R r3(new Room("Level 3"));
 
 	//inserting stuff to the rooms
-	std::unique_ptr<Object> item_1(new Item("Google glass", "Glasses to translate japanese to english") );
-	std::unique_ptr<Object> item_2(new Weapon("Sword", "A long broad sword", 10,1) );
+	UP_O item_1(new Item("Google glass", "Glasses to translate japanese to english") );
+	UP_O item_2(new Weapon("Sword", "A long broad sword", 10,1) );
 	r1->put(std::move(item_1));
 	r1->put(std::move(item_2));
 
 	//inserting actors into rooms
-	std::unique_ptr<Animal> actor_1(new EvilCat("MadCat") );
-	std::unique_ptr<Animal> actor_2(new Cat("Siamese") );
-	std::unique_ptr<Robot> actor_3(new CafeRobot("Bob") );
-	std::unique_ptr<Object> temp_wep1(new Weapon("Axe", "Heavy Axe", 10,3));
-	std::unique_ptr<Robot> actor_4(new EvilRobot("PetaMan", 10, std::move(temp_wep1)) );
+	UP_F actor_1(new EvilCat("MadCat") );
+	UP_F actor_2(new Cat("Siamese") );
+	UP_F actor_3(new CafeRobot("Bob") );
+	UP_O temp_wep1(new Weapon("Axe", "Heavy Axe", 10,3));
+	UP_F actor_4(new EvilRobot("PetaMan", 10, std::move(temp_wep1)) );
 
 	std::cout<<"\n\nINSERTING ACTORS!!"<<std::endl;
-	r1->put_robot( std::move(actor_3) );
-	r1->put_animal(std::move(actor_2) );
-	r1->put_animal( std::move(actor_1) );
-	r3->put_robot( std::move(actor_4) );
+	r1->enter( std::move(actor_3) );
+	r1->enter( std::move(actor_2) );
+	r1->enter( std::move(actor_1) );
+	r3->enter( std::move(actor_4) );
 
 
 	rooms_1.push_back(r2);
@@ -63,7 +66,7 @@ void test_Room(){
 	r3->link_exit(r2);
 
 	//start in room 1
-	std::shared_ptr<Room> currentRoom = all_rooms[0] ;
+	SP_R currentRoom = all_rooms[0] ;
 
 	std::cout<<"Calling description() on all rooms..."<<std::endl;
 	for (unsigned int i = 0; i<all_rooms.size(); ++i)
@@ -90,18 +93,19 @@ void test_Room(){
 		all_rooms[i]->description();
 
 	std::cout<<"\nGet items from current room..."<<std::endl;
-	std::unique_ptr<Object> get_item_1 = currentRoom->take("Google glass");
-	std::unique_ptr<Object> get_item_2 = currentRoom->take("Sword");
-	std::unique_ptr<Object> get_item_3 = currentRoom->take("Derp"); //nullptr
+	UP_O get_item_1 = currentRoom->take("Google glass");
+	UP_O get_item_2 = currentRoom->take("Sword");
+	UP_O get_item_3 = currentRoom->take("Derp"); //nullptr
 	std::cout<<"get_item_1:"<<std::endl;
 	std::cout<<*get_item_1<<std::endl;
 	std::cout<<"get_item_2:"<<std::endl;
 	std::cout<<*get_item_2<<std::endl;
 
 	std::cout<<"\nGet actors from current room..."<<std::endl;
-	auto get_robot_1 = currentRoom->take_robot("Bob");
+	UP_F get_robot_1 = currentRoom->leave("Bob");
 	std::cout<<"get_robot_1:"<<std::endl;
-	std::cout<<*get_robot_1<<std::endl;
+	get_robot_1->talk();
+
 
 	std::cout<<"Calling description() on all rooms again..."<<std::endl;
 	for (unsigned int i = 0; i<all_rooms.size(); ++i){
@@ -122,18 +126,52 @@ void test_attack(){
 	std::unique_ptr<Fighter> er1(new EvilRobot("Evil Asimo"));
 	std::string input = "";
 	int temp = er1->attack();
+	std::cout<<"attack returned "<<temp<<std::endl;
 	std::getline(std::cin, input);
 	temp = er1->attack();
+	std::cout<<"attack returned "<<temp<<std::endl;
 	std::getline(std::cin, input);
 	temp = er1->attack();
+	std::cout<<"attack returned "<<temp<<std::endl;
 	std::getline(std::cin, input);
 	temp = er1->attack();
+	std::cout<<"attack returned "<<temp<<std::endl;
 	std::getline(std::cin, input);
 	temp = er1->attack();
+	std::cout<<"attack returned "<<temp<<std::endl;
 	std::getline(std::cin, input);
 
+}
+//////////////////////////////////////////////////////////////////
+void test_FighterVector(){
+	using FP = std::unique_ptr<Fighter>;
+	using OP = std::unique_ptr<Object>;
+	FP actor_1(new EvilCat("MadCat") );
+	FP actor_2(new Cat("Siamese") );
+	FP actor_3(new CafeRobot("Bob") );
+	OP temp_wep1(new Weapon("Axe", "Heavy Axe", 10,3));
+	FP actor_4(new EvilRobot("PetaMan", 10, std::move(temp_wep1)) );
+	FP actor_5(new Player("Andreas"));
 
-	temp+=1;
+	std::vector<FP> T;
+	T.push_back(std::move(actor_1));
+	T.push_back(std::move(actor_2));
+	T.push_back(std::move(actor_3));
+	T.push_back(std::move(actor_4));
+	T.push_back(std::move(actor_5));
+
+	for (unsigned int i=0; i< T.size(); ++i){
+		std::cout<<T[i]->name()<<std::endl;
+		std::cout<<T[i]->type()<<std::endl;
+		std::cout<<T[i]->baseType()<<std::endl;
+		std::cout<<T[i]->current_HP()<<std::endl;
+		T[i]->takeDamage(1);
+		std::cout<<T[i]->current_HP()<<std::endl;
+		T[i]->talk();
+		int temp = T[i]->attack();
+		std::cout<<"attack: "<<temp<<std::endl;
+		std::cout<<"----------------------------"<<std::endl;
+	}
 }
 
 #endif /* TESTING_HPP_ */

@@ -13,7 +13,7 @@
 #include "Robot.hpp"
 #include "Weapon.hpp" //contains Item.hpp
 #include <vector>
-#include <memory>
+#include <memory> //smart pointers
 #include <algorithm> //for shuffle
 #include <fstream> //for file reading
 #include <sstream> //for stringsstream
@@ -36,9 +36,7 @@ protected:
 
 
 	void loadQuizzes(){
-
 		std::srand(time(NULL)); //generare different randomizations
-
 
 		std::string code_for_answer = "#ANSWER:";
 		std::string code_for_alt = "#ALT:";
@@ -194,8 +192,8 @@ public:
 		return return_value;
 	}
 
-	virtual void talk() const{
-		std::cout<<"\n*BLIP-BLOP* Solve my quizzes!!! *BUZZ*"<<"\n";
+	virtual void talk(){
+		std::cout<<"\n*BLIP-BLOP* Solve my quizzes!!! *BUZZ*"<<"\n\n";
 	}
 
 	std::unique_ptr<Object> getItem(){

@@ -17,7 +17,7 @@ public:
 
 	virtual std::string type() const;
 	virtual int attack();
-	virtual void talk() const;
+	virtual void talk();
 
 	friend std::ostream& operator<<(std::ostream&, const Robot&);
 };

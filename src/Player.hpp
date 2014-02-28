@@ -21,7 +21,7 @@ public:
 	virtual std::string type() const{return "Player";}
 	virtual std::string baseType() const{return "Fighter";}
 	virtual int attack();
-	virtual void talk() const;
+	virtual void talk();
 	void stats() const;
 	void equip_RH(std::unique_ptr<Object>);
 	void equip_LH(std::unique_ptr<Object>);

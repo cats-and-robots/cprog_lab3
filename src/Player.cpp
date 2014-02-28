@@ -27,8 +27,8 @@ int Player::attack() {
 	return power;
 }
 
-void Player::talk() const{
-	std::cout<<"I am "<<name()<<"!"<<std::endl;
+void Player::talk(){
+	std::cout<<"\nI am "<<name()<<"!\n\n";
 }
 
 void Player::stats() const{

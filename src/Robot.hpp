@@ -19,7 +19,7 @@ public:
 
 	virtual std::string type() const = 0;
 	virtual int attack() = 0;
-	virtual void talk() const = 0;
+	virtual void talk() = 0;
 
 	std::string baseType() const{return "Robot";}
 

@@ -27,8 +27,9 @@ private:
 	std::vector< std::shared_ptr<Room> > neighbors_;
 	std::weak_ptr<Room> exit_;
 	std::string name_;
-	std::map<std::string, std::unique_ptr<Animal> > animals_;
-	std::map<std::string, std::unique_ptr<Robot>  > robots_;
+	std::map<std::string, std::unique_ptr<Fighter> > actors_;
+//	std::map<std::string, std::unique_ptr<Animal> > animals_;
+//	std::map<std::string, std::unique_ptr<Robot>  > robots_;
 
 public:
 
@@ -80,31 +81,18 @@ public:
 		this->show_inventory();
 		std::cout<<"\n";
 		int counter;
-		if (animals_.size()>0){
-			if (animals_.size() == 1)
-				std::cout<<"One animal:"<<std::endl;
+		if (actors_.size()>0){
+			if (actors_.size() == 1)
+				std::cout<<"One creature:"<<std::endl;
 			else
-				std::cout<<"Several animals:"<<std::endl;
+				std::cout<<"Several creatures:"<<std::endl;
 			counter = 1;
-			for (auto iter = animals_.begin(); iter != animals_.end(); ++iter){
+			for (auto iter = actors_.begin(); iter != actors_.end(); ++iter){
 				std::cout<< counter++ <<": "<<iter->first<<std::endl;
 			}
 		}
 		else
-			std::cout<<"There are no animals..."<<std::endl;
-		std::cout<<"\n";
-		if (robots_.size()>0){
-			if (robots_.size() == 1)
-				std::cout<<"One robot:"<<std::endl;
-			else
-				std::cout<<"Several robots:"<<std::endl;
-			counter = 1;
-			for (auto iter = robots_.begin(); iter != robots_.end(); ++iter){
-				std::cout<< counter++ <<": "<<iter->first<<std::endl;
-			}
-		}
-		else
-			std::cout<<"There are no robots..."<<std::endl;
+			std::cout<<"There are no creatures..."<<std::endl;
 		std::cout<<"\n";
 		std::cout<<"--------------------------------------------"<<std::endl;
 	}
@@ -124,39 +112,25 @@ public:
 			return nullptr;
 	}
 
-	void put_animal(std::unique_ptr<Animal> ani){
+	void enter(std::unique_ptr<Fighter> actor){
 		//		http://stackoverflow.com/questions/6952486/recommended-way-to-insert-elements-into-map
 		//		Also, if your class has no default constructror, you are forced to use insert
-		std::cout<<"Inserted "<<ani->type() <<" "<<ani->name()<<"!"<<std::endl;
-		animals_.insert (std::pair< std::string, std::unique_ptr<Animal> >
-			(ani->name(),std::move(ani)) );
-	}
-	void put_robot(std::unique_ptr<Robot> rob){
-		std::cout<<"Inserted "<<rob->type() <<" "<<rob->name()<<"!"<<std::endl;
-		robots_.insert (std::pair< std::string, std::unique_ptr<Robot> >
-			(rob->name(),std::move(rob)) );
+		std::cout<<"A "<<actor->type() <<" named "<<actor->name()<<" entered the room!"<<std::endl;
+		actors_.insert (std::pair< std::string, std::unique_ptr<Fighter> >
+			(actor->name(),std::move(actor)) );
 	}
 
-	std::unique_ptr<Animal> take_animal(std::string name){
-		for (auto iter = animals_.find(name); iter != animals_.end(); ++iter){
+	std::unique_ptr<Fighter> leave(std::string name){
+		for (auto iter = actors_.find(name); iter != actors_.end(); ++iter){
 			if (iter->first == name){
-				std::unique_ptr<Animal> thing = std::move(iter->second);
-				animals_.erase(iter);
-				return std::move(thing);
+				std::unique_ptr<Fighter> actor = std::move(iter->second);
+				actors_.erase(iter);
+				return std::move(actor);
 			}
 		}
 		return nullptr;
 	}
-	std::unique_ptr<Robot> take_robot(std::string name){
-		for (auto iter = robots_.find(name); iter != robots_.end(); ++iter){
-			if (iter->first == name){
-				std::unique_ptr<Robot> thing = std::move(iter->second);
-				robots_.erase(iter);
-				return std::move(thing);
-			}
-		}
-		return nullptr;
-	}
+
 
 
 

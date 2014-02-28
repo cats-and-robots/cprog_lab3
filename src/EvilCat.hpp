@@ -18,7 +18,7 @@ public:
 	virtual ~EvilCat();
 
 	virtual std::string type() const;
-	virtual void talk() const;
+	virtual void talk();
 
 	friend std::ostream& operator<<(std::ostream&, const Animal&);
 };
