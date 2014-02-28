@@ -20,6 +20,14 @@ Player::~Player() {
 	std::cout<<"Destroyed "<<this->type()<<" "<<this->name()<<std::endl;
 }
 
+std::string Player::type() const{
+	return "Player";
+}
+
+std::string Player::baseType() const{
+	return "Fighter";
+}
+
 int Player::attack() {
 	int power = ATK_;
 	if (RH_) power+= RH_->getATK();

@@ -7,7 +7,8 @@
 
 #include "CafeRobot.hpp"
 
-CafeRobot::CafeRobot(std::string name){
+CafeRobot::CafeRobot(std::string name)
+{
 	name_ = name;
 	current_HP_ = 1;
 	max_HP_ = 1;

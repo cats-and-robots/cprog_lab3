@@ -18,8 +18,8 @@ private:
 public:
 	explicit Player(std::string);
 	virtual ~Player();
-	virtual std::string type() const{return "Player";}
-	virtual std::string baseType() const{return "Fighter";}
+	virtual std::string type() const;
+	virtual std::string baseType() const;
 	virtual int attack();
 	virtual void talk();
 	void stats() const;
@@ -29,6 +29,11 @@ public:
 	std::unique_ptr<Object> unequip_LH();
 	//void fight(std::vector< std::unique_ptr<Animal> >, std::vector< std::unique_ptr<Robot> >  );
 
+	friend std::ostream& operator<<(std::ostream& stream, const Player& x){
+		stream <<"Name: " << x.name() << "\nType: "<< x.type() <<"\nHP: "
+				<< x.current_HP() <<"/"<<x.max_HP_;
+		return stream;
+	}
 };
 
 #endif /* PLAYER_HPP_ */

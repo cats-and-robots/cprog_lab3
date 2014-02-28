@@ -27,6 +27,8 @@ public:
 		stream <<"Name: "<< x.name() <<"\nType: " << x.type();
 		return stream;
 	}
+
+
 };
 
 #endif /* ROBOT_HPP_ */

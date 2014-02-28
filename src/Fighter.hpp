@@ -25,6 +25,7 @@ public:
 	int current_HP() const{return current_HP_;}
 	void takeDamage(int d){current_HP_-=d;}
 	std::string name() const{return name_;}
+
 };
 
 #endif /* FIGHTER_HPP_ */
