@@ -60,9 +60,10 @@ void test_Room(){
 	all_rooms.push_back(r2);
 	all_rooms.push_back(r3);
 
-	r1->link(rooms_1);
+	r1->link(r2);
+	r1->link(r3);
 	r2->link_exit(r1);
-	r2->link(rooms_2);
+	r2->link(r3);
 	r3->link_exit(r2);
 
 	//start in room 1

@@ -13,7 +13,8 @@ CPP_SRCS += \
 ../src/Player.cpp \
 ../src/Room.cpp \
 ../src/TheGame.cpp \
-../src/Weapon.cpp 
+../src/Weapon.cpp \
+../src/main.cpp 
 
 OBJS += \
 ./src/CafeRobot.o \
@@ -25,7 +26,8 @@ OBJS += \
 ./src/Player.o \
 ./src/Room.o \
 ./src/TheGame.o \
-./src/Weapon.o 
+./src/Weapon.o \
+./src/main.o 
 
 CPP_DEPS += \
 ./src/CafeRobot.d \
@@ -37,7 +39,8 @@ CPP_DEPS += \
 ./src/Player.d \
 ./src/Room.d \
 ./src/TheGame.d \
-./src/Weapon.d 
+./src/Weapon.d \
+./src/main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

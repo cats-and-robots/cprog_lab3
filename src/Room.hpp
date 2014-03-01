@@ -32,7 +32,7 @@ public:
 	std::string name() const;
 	std::string type() const;
 
-	void link(const std::vector< std::shared_ptr<Room> >& );
+	void link(const std::shared_ptr<Room> & );
 	void link_exit(const std::shared_ptr<Room>& );
 	void directions() const;
 	void description() const;

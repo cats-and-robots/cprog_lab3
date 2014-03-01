@@ -23,8 +23,9 @@ std::string Room::type() const{
 	return "Room";
 }
 
-void Room::link(const std::vector< std::shared_ptr<Room> > & rooms){
-	neighbors_ = rooms;
+
+void Room::link(const std::shared_ptr<Room>  & room){
+	neighbors_.push_back(room);
 }
 
 void Room::link_exit(const std::shared_ptr<Room> & exitRoom){
