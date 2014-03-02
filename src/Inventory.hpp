@@ -13,12 +13,13 @@
 #include "Weapon.hpp"
 
 class Inventory {
+
 protected:
+	Inventory();
+	virtual ~Inventory();
 	std::map<std::string, std::unique_ptr<Object> > items_;
 
 public:
-	Inventory();
-	virtual ~Inventory();
 
 	void put(std::unique_ptr<Object> );
 	std::unique_ptr<Object> take(std::string);

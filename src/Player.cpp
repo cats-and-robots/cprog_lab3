@@ -40,6 +40,7 @@ void Player::talk(){
 }
 
 void Player::stats() const{
+
 	std::cout<<this->type()<<" "<<this->name()<<std::endl;
 	std::cout<<"HP: "<<current_HP_<<"/"<<max_HP_<<std::endl;
 	std::cout<<"ATK: "<<ATK_ + ( (RH_ != NULL) ? RH_->getATK() : 0 )  + ( (LH_ != NULL) ? LH_->getATK() : 0 ) <<std::endl;
