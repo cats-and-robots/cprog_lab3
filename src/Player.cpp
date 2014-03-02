@@ -13,6 +13,8 @@ Player::Player(std::string name){
 	max_HP_=100;
 	ATK_=5;
 	DEF_=20;
+	std::unique_ptr<Inventory> inv(new Inventory);
+	this->inventory = std::move(inv);
 	std::cout<<"Created "<<this->type()<<" "<<this->name()<<std::endl;
 }
 

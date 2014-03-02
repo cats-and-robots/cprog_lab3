@@ -15,7 +15,7 @@
 #include "CafeRobot.hpp"
 #include "Inventory.hpp"
 
-class Player: public Fighter, public Inventory{
+class Player: public Fighter{
 private:
 	std::unique_ptr<Object> RH_;
 	std::unique_ptr<Object> LH_;

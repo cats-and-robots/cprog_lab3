@@ -22,7 +22,7 @@ void test_Room(){
 	using UP_F = std::unique_ptr<Fighter>;
 	using UP_O = std::unique_ptr<Object>;
 	using SP_R = std::shared_ptr<Room>;
-
+	using UP_I = std::unique_ptr<Inventory>;
 	std::cout<<"\n------------Testing Room-class!------------"<<std::endl;
 
 	std::vector< SP_R > rooms_1;
@@ -43,8 +43,11 @@ void test_Room(){
 	UP_F actor_1(new EvilCat("MadCat") );
 	UP_F actor_2(new Cat("Siamese") );
 	UP_F actor_3(new CafeRobot("Bob") );
+	UP_I inv_1(new Inventory);
 	UP_O temp_wep1(new Weapon("Axe", "Heavy Axe", 10,3));
-	UP_F actor_4(new EvilRobot("PetaMan", 10, std::move(temp_wep1)) );
+	inv_1->put(std::move(temp_wep1));
+	UP_F actor_4(new EvilRobot("PetaMan", 10));
+	actor_4->inventory = std::move(inv_1);
 
 	std::cout<<"\n\nINSERTING ACTORS!!"<<std::endl;
 	r1->enter( std::move(actor_3) );
@@ -120,7 +123,7 @@ void test_Player(){
 	std::unique_ptr<Object> temp_wep1(new Weapon("Axe", "Heavy Axe", 10,3));
 	p1->equip_RH(std::move(temp_wep1));
 	p1->stats();
-	p1->show_inventory();
+	p1->inventory->show_inventory();
 
 	std::unique_ptr<Fighter> er1(new EvilRobot("Evil Asimo"));
 	std::unique_ptr<Fighter> ec1(new EvilCat("Evil Munchkin"));
@@ -165,8 +168,15 @@ void test_FighterVector(){
 	FP actor_1(new EvilCat("MadCat") );
 	FP actor_2(new Cat("Siamese") );
 	FP actor_3(new CafeRobot("Bob") );
+
+
 	OP temp_wep1(new Weapon("Axe", "Heavy Axe", 10,3));
-	FP actor_4(new EvilRobot("PetaMan", 10, std::move(temp_wep1)) );
+	OP temp_item1(new Item("Key", "Key Item"));
+	FP actor_4(new EvilRobot("PetaMan", 10));
+	actor_4->inventory->put(std::move(temp_wep1));
+	actor_4->inventory->put(std::move(temp_item1));
+
+
 	FP actor_5(new Player("Andreas"));
 
 	std::vector<FP> T;
@@ -176,17 +186,33 @@ void test_FighterVector(){
 	T.push_back(std::move(actor_4));
 	T.push_back(std::move(actor_5));
 
+//	for (unsigned int i=0; i< T.size(); ++i){
+//		std::cout<<T[i]->name()<<std::endl;
+//		std::cout<<T[i]->type()<<std::endl;
+//		std::cout<<T[i]->baseType()<<std::endl;
+//		std::cout<<T[i]->current_HP()<<std::endl;
+//		T[i]->takeDamage(1);
+//		std::cout<<T[i]->current_HP()<<std::endl;
+//		T[i]->talk();
+//		int temp = T[i]->attack();
+//		std::cout<<"attack: "<<temp<<std::endl;
+//		std::cout<<"----------------------------"<<std::endl;
+//	}
+
+	std::cout<<"Loot the actors :P"<<std::endl;
 	for (unsigned int i=0; i< T.size(); ++i){
-		std::cout<<T[i]->name()<<std::endl;
-		std::cout<<T[i]->type()<<std::endl;
-		std::cout<<T[i]->baseType()<<std::endl;
-		std::cout<<T[i]->current_HP()<<std::endl;
-		T[i]->takeDamage(1);
-		std::cout<<T[i]->current_HP()<<std::endl;
-		T[i]->talk();
-		int temp = T[i]->attack();
-		std::cout<<"attack: "<<temp<<std::endl;
-		std::cout<<"----------------------------"<<std::endl;
+		std::vector< OP > loot;
+		std::cout<<T[i]->name()<<" had.." <<std::endl;
+		if (T[i]->inventory){
+			loot = T[i]->inventory->loot();
+			for (unsigned int j=0; j< loot.size(); ++j){
+				std::cout<<loot[j]->name()<<"\n"<<loot[j]->info()<<std::endl;
+			}
+		}
+		else{
+			std::cout<<"Empty"<<std::endl;
+		}
+
 	}
 }
 

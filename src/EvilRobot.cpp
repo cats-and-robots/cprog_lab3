@@ -15,6 +15,8 @@ EvilRobot::EvilRobot(std::string name)
 	max_HP_ = 1;
 	DEF_ = 0;
 	ATK_ = 0;
+	std::unique_ptr<Inventory> inv(new Inventory);
+	this->inventory = std::move(inv);
 	loadQuizzes();
 }
 
@@ -25,31 +27,12 @@ EvilRobot::EvilRobot(std::string name, int errors)
 	max_HP_ = errors;
 	DEF_ = 0;
 	ATK_ = 0;
-	loadQuizzes();
-}
-
-EvilRobot::EvilRobot(std::string name, std::unique_ptr<Object> item):
-	item_(std::move(item))
-{
-	name_ = name;
-	current_HP_ = 1;
-	max_HP_ = 1;
-	DEF_ = 0;
-	ATK_ = 0;
+	std::unique_ptr<Inventory> inv(new Inventory);
+	this->inventory = std::move(inv);
 	loadQuizzes();
 }
 
 
-EvilRobot::EvilRobot(std::string name, int errors, std::unique_ptr<Object> item):
-	item_(std::move(item))
-{
-	name_ = name;
-	current_HP_ = errors;
-	max_HP_ = errors;
-	DEF_ = 0;
-	ATK_ = 0;
-	loadQuizzes();
-}
 
 EvilRobot::~EvilRobot(){
 	std::cout<<"Destroyed "<<this->type()<<" "<<this->name()<<std::endl;
@@ -113,9 +96,9 @@ void EvilRobot::stats() const{
 	std::cout<<"Name: " << name() << "\nType: "<< type() <<"\nHP: "<< current_HP() <<"/"<< max_HP_<<std::endl;
 }
 
-std::unique_ptr<Object> EvilRobot::getItem(){
-	return std::move(item_);
-}
+//std::unique_ptr<Object> EvilRobot::getItem(){
+//	return std::move(item_);
+//}
 
 void EvilRobot::loadQuizzes(){
 	std::srand(time(NULL)); //generare different randomizations

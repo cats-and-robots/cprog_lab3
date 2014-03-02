@@ -45,3 +45,13 @@ void Inventory::show_inventory() const{
 	else
 		std::cout<<"No items..."<<std::endl;
 }
+
+std::vector< std::unique_ptr<Object> >  Inventory::loot(){
+	std::vector< std::unique_ptr<Object> > loot;
+	for (auto iter = items_.begin(); iter != items_.end(); ++iter){
+		std::unique_ptr<Object> thing = std::move(iter->second);
+		items_.erase(iter);
+		loot.push_back( std::move(thing) );
+	}
+	return loot;
+}

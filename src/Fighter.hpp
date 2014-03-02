@@ -8,6 +8,7 @@
 #ifndef FIGHTER_HPP_
 #define FIGHTER_HPP_
 #include <string>
+#include "Inventory.hpp"
 class Fighter {
 protected:
 	std::string name_;
@@ -17,6 +18,7 @@ protected:
 	int DEF_;
 
 public:
+	std::unique_ptr<Inventory> inventory;
 	virtual ~Fighter(){};
 	virtual std::string type() const = 0;
 	virtual std::string baseType() const = 0;
@@ -26,6 +28,7 @@ public:
 	int current_HP() const{return current_HP_;}
 	void takeDamage(int d){current_HP_-=d;}
 	std::string name() const{return name_;}
+
 };
 
 #endif /* FIGHTER_HPP_ */
