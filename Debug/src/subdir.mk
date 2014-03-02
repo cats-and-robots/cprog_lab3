@@ -6,7 +6,6 @@
 CPP_SRCS += \
 ../src/CafeRobot.cpp \
 ../src/Cat.cpp \
-../src/Commands.cpp \
 ../src/EvilCat.cpp \
 ../src/EvilRobot.cpp \
 ../src/Inventory.cpp \
@@ -20,7 +19,6 @@ CPP_SRCS += \
 OBJS += \
 ./src/CafeRobot.o \
 ./src/Cat.o \
-./src/Commands.o \
 ./src/EvilCat.o \
 ./src/EvilRobot.o \
 ./src/Inventory.o \
@@ -34,7 +32,6 @@ OBJS += \
 CPP_DEPS += \
 ./src/CafeRobot.d \
 ./src/Cat.d \
-./src/Commands.d \
 ./src/EvilCat.d \
 ./src/EvilRobot.d \
 ./src/Inventory.d \
