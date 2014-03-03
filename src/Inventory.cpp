@@ -7,15 +7,10 @@
 
 #include "Inventory.hpp"
 
-Inventory::Inventory(){
-	std::cout<<"Created a Inventory!"<<std::endl;
-}
-Inventory::~Inventory(){
-	std::cout<<"Destroyed a Inventory!"<<std::endl;
-}
+Inventory::Inventory(){}
+Inventory::~Inventory(){}
 
 void Inventory::put(std::unique_ptr<Object> item){
-	std::cout<<"Inserted "<<item->type() <<" "<<item->name()<<"!"<<std::endl;
 	items_.insert (std::pair< std::string, std::unique_ptr<Object> >
 		(item->name(),std::move(item)) );
 }
@@ -33,17 +28,39 @@ std::unique_ptr<Object> Inventory::take(std::string name){
 
 void Inventory::show_inventory() const{
 	int counter = 1;
-	if (items_.size()>0 ){
-		if (items_.size() == 1 )
-			std::cout<<"One object:"<<std::endl;
-		else
-			std::cout<<"Several objects:"<<std::endl;
+	std::cout<<"Inventory:"<<std::endl;
+	if (!this->isEmpty() ){
 		for (auto iter = items_.begin(); iter != items_.end(); ++iter){
-			std::cout<< counter++ <<": "<< iter->second->type()<< " " <<iter->first<<std::endl;
+			std::cout<< counter++ <<": <"<< iter->second->type()<< "> " <<iter->first<<std::endl;
 		}
 	}
 	else
-		std::cout<<"No items..."<<std::endl;
+		std::cout<<"Empty"<<std::endl;
+}
+
+bool Inventory::isEmpty() const{
+	if (items_.size() == 0 )
+		return true;
+	else
+		return false;
+}
+
+std::vector<std::string> Inventory::get_items_name() const{
+	std::vector<std::string> names;
+	for (auto iter = items_.begin(); iter != items_.end(); ++iter){
+		if (iter->second->type() == "Item")
+			names.push_back(iter->first);
+	}
+	return names;
+}
+
+std::vector<std::string> Inventory::get_weapons_name() const{
+	std::vector<std::string> names;
+	for (auto iter = items_.begin(); iter != items_.end(); ++iter){
+		if (iter->second->type() == "Weapon")
+			names.push_back(iter->first);
+	}
+	return names;
 }
 
 std::vector< std::unique_ptr<Object> >  Inventory::loot(){

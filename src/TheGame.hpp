@@ -17,9 +17,10 @@
 #include "EvilRobot.hpp"
 #include "Room.hpp"
 
-
 #include "../cmd/cmd_help.hpp"
 #include "../cmd/cmd_inventory.hpp"
+#include "../cmd/cmd_stats.hpp"
+#include "../cmd/cmd_equip_righthand.hpp"
 
 #include <iostream>
 #include <string>
@@ -42,7 +43,7 @@ private:
 	void load_cmds();
 	bool cmd_exist(std::string) const;
 	std::string read_string() const;
-	int read_int() const;
+//	int read_int() const;
 	void take_command();
 	//battle
 

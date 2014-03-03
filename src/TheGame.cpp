@@ -34,12 +34,19 @@ TheGame::TheGame(){
 	currentRoom_ = entrance;
 
 	//create items and weapons
+	p_O small_knife(new Weapon("Small knife", "A small kitchen knife", 2,0));
+	p_O heavy_axe(new Weapon("Heavy Axe", "A big powerful axe", 10,3));
+	p_O google_glass(new Item("Google Glass", "Device to help you translate japanese to english"));
 
 	//Create player and actors
 	p_P tmp(new Player("Hero"));
 	Hero_ = std::move(tmp);
 
 	//insert items/weapons on actors and rooms
+	Hero_->inventory->put(std::move(small_knife));
+	Hero_->inventory->put(std::move(heavy_axe));
+	Hero_->inventory->put(std::move(google_glass));
+
 
 }
 
@@ -55,6 +62,14 @@ void TheGame::load_cmds(){
 	p_cmd cmd_inventory(new inventory);
 	cmds_.insert (std::pair< std::string, p_cmd >
 		("inventory",std::move(cmd_inventory)) );
+
+	p_cmd cmd_stats(new stats);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("stats",std::move(cmd_stats)) );
+
+	p_cmd cmd_equip_righthand(new equip_righthand);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("equip righthand",std::move(cmd_equip_righthand)) );
 }
 
 bool TheGame::cmd_exist(std::string input_cmd) const{
@@ -71,20 +86,20 @@ std::string TheGame::read_string() const{
 	return input;
 }
 
-int TheGame::read_int() const{
-	std::string input = "";
-	int int_input = 0;
-	while (true){
-		std::cout<<">> ";
-		std::getline(std::cin, input);
-
-		std::stringstream myStream(input);
-		if (myStream >> int_input)
-			break;
-		std::cout << "Not an integer, please try again!" << std::endl;
-	}
-	return int_input;
-}
+//int TheGame::read_int() const{
+//	std::string input = "";
+//	int int_input = 0;
+//	while (true){
+//		std::cout<<">> ";
+//		std::getline(std::cin, input);
+//
+//		std::stringstream myStream(input);
+//		if (myStream >> int_input)
+//			break;
+//		std::cout << "Not an integer, please try again!" << std::endl;
+//	}
+//	return int_input;
+//}
 
 void TheGame::take_command(){
 	/* if there are no spaces, it's a command

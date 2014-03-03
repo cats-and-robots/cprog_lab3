@@ -25,6 +25,9 @@ public:
 	void put(std::unique_ptr<Object> );
 	std::unique_ptr<Object> take(std::string);
 	void show_inventory() const;
+	bool isEmpty() const;
+	std::vector<std::string> get_items_name() const;
+	std::vector<std::string> get_weapons_name() const;
 	std::vector< std::unique_ptr<Object> >  loot();
 
 };

@@ -19,7 +19,7 @@ Item::Item(std::string name, std::string info)
 	info_=info;
 }
 
-Item::~Item() {std::cout<<"Destroyed "<<type()<<" "<<name()<<std::endl;}
+Item::~Item(){}
 
 int Item::getATK() const{
 	return 0;

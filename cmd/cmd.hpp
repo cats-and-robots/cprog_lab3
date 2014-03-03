@@ -15,14 +15,29 @@
 #include "../src/Player.hpp"
 #include "../src/Room.hpp"
 
-using up_P = std::unique_ptr<Player>;
-using sp_R = std::shared_ptr<Room>;
+using p_P = std::unique_ptr<Player>;
+using p_R = std::shared_ptr<Room>;
 
 class cmd{
 public:
 
 	virtual ~cmd(){};
-	virtual std::pair< up_P, sp_R > execute(up_P, sp_R, std::string) = 0;
+	virtual std::pair< p_P, p_R > execute(p_P, p_R, std::string) = 0;
+
+	int read_int() const{
+		std::string input = "";
+		int int_input = 0;
+		while (true){
+			std::cout<<">> ";
+			std::getline(std::cin, input);
+			std::stringstream myStream(input);
+			if (myStream >> int_input)
+				break;
+			std::cout << "Not an integer, please try again!" << std::endl;
+		}
+		return int_input;
+	}
+
 };
 
 
