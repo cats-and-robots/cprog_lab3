@@ -8,9 +8,11 @@
 #ifndef WEAPON_HPP_
 #define WEAPON_HPP_
 
-#include "Item.hpp"
+//#include "Item.hpp"
+#include "Object.hpp"
 
-class Weapon:public Item {
+//class Weapon:public Item {
+class Weapon:public Object {
 private:
 	int ATK_;
 	int DEF_;
@@ -23,7 +25,6 @@ public:
 	virtual int getATK() const;
 	virtual int getDEF() const;
 
-	friend std::ostream& operator<<(std::ostream&, const Object&);
 };
 
 #endif /* WEAPON_HPP_ */

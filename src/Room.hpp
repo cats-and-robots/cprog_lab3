@@ -37,7 +37,7 @@ public:
 	void directions() const;
 	void description() const;
 
-	std::shared_ptr<Room> neighbor(int);
+	std::shared_ptr<Room> neighbor(const std::string);
 	std::shared_ptr<Room> exit_room();
 
 	void enter(std::unique_ptr<Fighter> );

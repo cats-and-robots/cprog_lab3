@@ -22,9 +22,9 @@ TheGame::TheGame(){
 
 	//Link the rooms
 	entrance->link(main_hall);
+	main_hall->link_exit(entrance);
 	main_hall->link(cat_cafe);
 	main_hall->link(second_floor);
-	main_hall->link_exit(entrance);
 	cat_cafe->link_exit(main_hall);
 	second_floor->link(bathroom);
 	second_floor->link_exit(main_hall);
@@ -32,21 +32,40 @@ TheGame::TheGame(){
 
 	//set starting room
 	currentRoom_ = entrance;
+	std::cout<<"Entrance: "<<entrance->name()<<std::endl;
+//	currentRoom_ = main_hall;
+
 
 	//create items and weapons
-	p_O small_knife(new Weapon("Small knife", "A small kitchen knife", 2,0));
+	p_O small_knife(new Weapon("Small Knife", "A small kitchen knife", 2,0));
 	p_O heavy_axe(new Weapon("Heavy Axe", "A big powerful axe", 10,3));
 	p_O google_glass(new Item("Google Glass", "Device to help you translate japanese to english"));
+	p_O small_potion(new Potion("Small Potion", "Restores a small amount of your health", 10));
+	p_O big_potion(new Potion("Big Potion", "Restores a lot of your health!", 110));
+	p_O small_poison(new Potion("Small Poison", "Damage your health a little", -20));
+	p_O big_poison(new Potion("Big Poison", "Damage your health a lot!", -120));
 
 	//Create player and actors
 	p_P tmp(new Player("Hero"));
 	Hero_ = std::move(tmp);
+	p_F cat(new Cat("Siamese"));
 
 	//insert items/weapons on actors and rooms
 	Hero_->inventory->put(std::move(small_knife));
 	Hero_->inventory->put(std::move(heavy_axe));
-	Hero_->inventory->put(std::move(google_glass));
+	Hero_->inventory->put(std::move(small_potion));
+	Hero_->inventory->put(std::move(big_potion));
+	Hero_->inventory->put(std::move(small_poison));
+	Hero_->inventory->put(std::move(big_poison));
+	currentRoom_->put(std::move(google_glass));
+	currentRoom_->enter(std::move(cat));
 
+	//save all the room pointers in a vector
+	all_rooms_.push_back(std::move(entrance));
+	all_rooms_.push_back(std::move(main_hall));
+	all_rooms_.push_back(std::move(cat_cafe));
+	all_rooms_.push_back(std::move(second_floor));
+	all_rooms_.push_back(std::move(bathroom));
 
 }
 
@@ -70,6 +89,51 @@ void TheGame::load_cmds(){
 	p_cmd cmd_equip_righthand(new equip_righthand);
 	cmds_.insert (std::pair< std::string, p_cmd >
 		("equip righthand",std::move(cmd_equip_righthand)) );
+
+	p_cmd cmd_equip_lefthand(new equip_lefthand);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("equip lefthand",std::move(cmd_equip_lefthand)) );
+
+	p_cmd cmd_unequip_righthand(new unequip_righthand);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("unequip righthand",std::move(cmd_unequip_righthand)) );
+
+	p_cmd cmd_unequip_lefthand(new unequip_lefthand);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("unequip lefthand",std::move(cmd_unequip_lefthand)) );
+
+	p_cmd cmd_look_around(new look_around);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("look around",std::move(cmd_look_around)) );
+
+	p_cmd cmd_directions(new directions);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("directions",std::move(cmd_directions)) );
+
+	p_cmd cmd_take(new take);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("take",std::move(cmd_take)) );
+
+	p_cmd cmd_talk_to(new talk_to);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("talk to",std::move(cmd_talk_to)) );
+
+	p_cmd cmd_go_to(new go_to);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("go to",std::move(cmd_go_to)) );
+
+	p_cmd command_exit(new exit_room);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("exit",std::move(command_exit)) );
+
+	p_cmd command_use(new use_object);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("use",std::move(command_use)) );
+
+	p_cmd command_info(new object_info);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("info",std::move(command_info)) );
+
 }
 
 bool TheGame::cmd_exist(std::string input_cmd) const{
@@ -86,46 +150,42 @@ std::string TheGame::read_string() const{
 	return input;
 }
 
-//int TheGame::read_int() const{
-//	std::string input = "";
-//	int int_input = 0;
-//	while (true){
-//		std::cout<<">> ";
-//		std::getline(std::cin, input);
-//
-//		std::stringstream myStream(input);
-//		if (myStream >> int_input)
-//			break;
-//		std::cout << "Not an integer, please try again!" << std::endl;
-//	}
-//	return int_input;
-//}
+void TheGame::lex_analys(const std::string& input, std::string& command, std::string& object) const{
+/* Tries to separate the command and object
+ * from the input string given by the user.
+ * If there is no found command,
+ * then command will be the same as input
+ * and object will be unchanged
+ */
+
+	std::stringstream ss(input);
+	char delim = ' '; //split-character
+	std::string elem;
+	bool command_found = false;
+	//split the input on each occurrence of space
+    while (std::getline(ss, elem, delim)) {
+    	if ( ! command_found){
+    		if(command.empty()) command += elem;
+    		else command += " "+ elem;
+    		if(cmd_exist(command))
+    			command_found = true;
+    		continue;
+    	}
+    	if (object.empty()) object += elem;
+    	else object += " "+ elem;
+    }
+
+}
 
 void TheGame::take_command(){
-	/* if there are no spaces, it's a command
-	 * else, everything after the last space is some kind of object to
-	 * the command.
-	 * Exceptions: <equip righthand/lefthand>, <unequip righthand/lefthand>,
-	 * <look around>
-	 */
-
-	std::string input = read_string();
 	std::string command;
 	std::string object;
-	std::size_t pos_found = input.find_last_of(" ");
-
-	if (pos_found!=std::string::npos){
-		command = input.substr(0,pos_found);
-		if (command == "equip" || command == "unequip" ||command == "look")
-			command = input; //the command does not carry any object
-		else
-			object = input.substr(pos_found+1);
+	std::string input = read_string();
+	if (input == "kill") {
+		continue_game_=false;
+		return;
 	}
-	else
-		command = input;
-
-	std::cout<<"command: <"<<command<<">"<<std::endl;
-	std::cout<<"object: <"<<object<<">"<<std::endl;
+	lex_analys(input, command, object);
 
 	//method that checks if the command exist
 	if (!cmd_exist(command))
@@ -140,12 +200,13 @@ void TheGame::take_command(){
 //////////////////////////////////////////////////////////////////////
 void TheGame::playTheGame(){
 	std::cout<<"PUT IN GAME LOGIC HERE!!!"<<std::endl;
-	currentRoom_->description();
-	currentRoom_->directions();
-	Hero_->stats();
+//	currentRoom_->description();
+//	currentRoom_->directions();
+//	Hero_->stats();
 
-
-	while (true){
+	continue_game_ = true;
+	while (continue_game_){
 		this->take_command();
 	}
+	std::cout<<"Good bye!"<<std::endl;
 }

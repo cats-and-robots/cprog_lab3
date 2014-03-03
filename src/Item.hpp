@@ -21,7 +21,6 @@ public:
 	virtual int getDEF() const;
 	virtual std::string type() const;
 
-	friend std::ostream& operator<<(std::ostream&, const Object&);
 };
 
 

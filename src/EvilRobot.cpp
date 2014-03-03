@@ -51,18 +51,14 @@ int EvilRobot::attack(){
 		std::cout<<i+1<<": "<<quizzes_[current_Quiz_index_]->options_[i]<<std::endl;
 	}
 
-	//get input, and convert it to an integer
-	unsigned int int_answer = 0;
-	std::string input = "";
+	//ask the user for the answer of the quiz
+	int int_answer = 0;
 	while (true) {
-		std::cout << "Please enter a number between 1 and "<<quizzes_[current_Quiz_index_]->options_.size()<<".\n>> ";
-		std::getline(std::cin, input);
-
-		// This code converts from string to number safely.
-		std::stringstream myStream(input);
-		if (myStream >> int_answer && int_answer > 0 && int_answer <= quizzes_[current_Quiz_index_]->options_.size() )
+		std::cout << "Please enter a number between 1 and "<<quizzes_[current_Quiz_index_]->options_.size()<<std::endl;
+		int_answer = this->read_int();
+		if (int_answer > 0 && int_answer <= (int)quizzes_[current_Quiz_index_]->options_.size() )
 			break;
-		std::cout << "Invalid number, please try again!" << std::endl;
+		std::cout<<"Not a number between 1 and "<<quizzes_[current_Quiz_index_]->options_.size()<<std::endl;
 	}
 
 	int return_value;
@@ -96,9 +92,19 @@ void EvilRobot::stats() const{
 	std::cout<<"Name: " << name() << "\nType: "<< type() <<"\nHP: "<< current_HP() <<"/"<< max_HP_<<std::endl;
 }
 
-//std::unique_ptr<Object> EvilRobot::getItem(){
-//	return std::move(item_);
-//}
+int EvilRobot::read_int() const{
+	std::string input = "";
+	int int_input = 0;
+	while (true){
+		std::cout<<">> ";
+		std::getline(std::cin, input);
+		std::stringstream myStream(input);
+		if (myStream >> int_input)
+			break;
+		std::cout << "Not an integer, please try again!" << std::endl;
+	}
+	return int_input;
+}
 
 void EvilRobot::loadQuizzes(){
 	std::srand(time(NULL)); //generare different randomizations

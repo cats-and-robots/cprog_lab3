@@ -11,6 +11,7 @@ CPP_SRCS += \
 ../src/Inventory.cpp \
 ../src/Item.cpp \
 ../src/Player.cpp \
+../src/Potion.cpp \
 ../src/Room.cpp \
 ../src/TheGame.cpp \
 ../src/Weapon.cpp \
@@ -24,6 +25,7 @@ OBJS += \
 ./src/Inventory.o \
 ./src/Item.o \
 ./src/Player.o \
+./src/Potion.o \
 ./src/Room.o \
 ./src/TheGame.o \
 ./src/Weapon.o \
@@ -37,6 +39,7 @@ CPP_DEPS += \
 ./src/Inventory.d \
 ./src/Item.d \
 ./src/Player.d \
+./src/Potion.d \
 ./src/Room.d \
 ./src/TheGame.d \
 ./src/Weapon.d \

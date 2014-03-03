@@ -11,7 +11,6 @@
 
 
 #include "Robot.hpp"
-#include "Weapon.hpp" //contains Item.hpp
 #include "Inventory.hpp"
 #include <vector>
 #include <memory> //smart pointers
@@ -33,6 +32,7 @@ class EvilRobot:public Robot {
 private:
 	std::vector< std::unique_ptr<Quiz> > quizzes_;
 	int current_Quiz_index_ = 0;
+	int read_int() const;
 	void loadQuizzes();
 
 public:

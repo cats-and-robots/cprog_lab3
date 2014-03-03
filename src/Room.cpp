@@ -7,13 +7,9 @@
 
 #include "Room.hpp"
 
-Room::Room(std::string name):name_(name){
-	std::cout<<"Created "<< this->type() << " " << this->name() << "!"<<std::endl;
-}
+Room::Room(std::string name):name_(name){}
 
-Room::~Room(){
-	std::cout<<"Destroyed "<< this->type() << " " << this->name() << "!"<<std::endl;
-}
+Room::~Room(){ std::cout<<"Destroyed Room "<<name()<<std::endl;}
 
 std::string Room::name() const{
 	return name_;
@@ -73,12 +69,17 @@ void Room::description() const{
 	std::cout<<"--------------------------------------------"<<std::endl;
 }
 
-std::shared_ptr<Room> Room::neighbor(int room_nr){
-	unsigned int index = room_nr-1;
-	if (index > neighbors_.size() || index < 0)
-		return nullptr;
-	else
-		return neighbors_[index];
+std::shared_ptr<Room> Room::neighbor(const std::string name){
+	for (unsigned int i = 0; i<neighbors_.size(); ++i){
+		if (name == neighbors_[i]->name())
+			return neighbors_[i];
+	}
+	return nullptr;
+//	unsigned int index = room_nr-1;
+//	if (index > neighbors_.size() || index < 0)
+//		return nullptr;
+//	else
+//		return neighbors_[index];
 }
 
 std::shared_ptr<Room> Room::exit_room(){
@@ -91,7 +92,6 @@ std::shared_ptr<Room> Room::exit_room(){
 void Room::enter(std::unique_ptr<Fighter> actor){
 	//		http://stackoverflow.com/questions/6952486/recommended-way-to-insert-elements-into-map
 	//		Also, if your class has no default constructror, you are forced to use insert
-	std::cout<<"A "<<actor->type() <<" named "<<actor->name()<<" entered the room!"<<std::endl;
 	actors_.insert (std::pair< std::string, std::unique_ptr<Fighter> >
 		(actor->name(),std::move(actor)) );
 }

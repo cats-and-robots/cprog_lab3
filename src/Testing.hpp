@@ -80,17 +80,17 @@ void test_Room(){
 	for (unsigned int i = 0; i<all_rooms.size(); ++i)
 		all_rooms[i]->directions();
 
-
-	std::cout<<"\nEnter room 2 from room 1..."<<std::endl;
-	currentRoom = currentRoom->neighbor(1);
-	std::cout<<"currentRoom: "<<currentRoom->name()<<std::endl;
-	std::cout<<"call currentRoom->directions()..."<<std::endl;
-	currentRoom->directions();
-	std::cout<<"\nGoing back from room 2 (currentRoom) to room 1..."<<std::endl;
-	currentRoom = currentRoom->exit_room();
-	std::cout<<"currentRoom: "<<currentRoom->name()<<std::endl;
-	std::cout<<"call currentRoom->directions()..."<<std::endl;
-	currentRoom->directions();
+//
+//	std::cout<<"\nEnter room 2 from room 1..."<<std::endl;
+//	currentRoom = currentRoom->neighbor(1);
+//	std::cout<<"currentRoom: "<<currentRoom->name()<<std::endl;
+//	std::cout<<"call currentRoom->directions()..."<<std::endl;
+//	currentRoom->directions();
+//	std::cout<<"\nGoing back from room 2 (currentRoom) to room 1..."<<std::endl;
+//	currentRoom = currentRoom->exit_room();
+//	std::cout<<"currentRoom: "<<currentRoom->name()<<std::endl;
+//	std::cout<<"call currentRoom->directions()..."<<std::endl;
+//	currentRoom->directions();
 
 	std::cout<<"Calling description() on all rooms..."<<std::endl;
 	for (unsigned int i = 0; i<all_rooms.size(); ++i)
@@ -101,9 +101,9 @@ void test_Room(){
 	UP_O get_item_2 = currentRoom->take("Sword");
 	UP_O get_item_3 = currentRoom->take("Derp"); //nullptr
 	std::cout<<"get_item_1:"<<std::endl;
-	std::cout<<*get_item_1<<std::endl;
+	std::cout<<get_item_1->name()<<std::endl;
 	std::cout<<"get_item_2:"<<std::endl;
-	std::cout<<*get_item_2<<std::endl;
+	std::cout<<get_item_2->name()<<std::endl;
 
 	std::cout<<"\nGet actors from current room..."<<std::endl;
 	UP_F get_robot_1 = currentRoom->leave("Bob");
@@ -186,18 +186,18 @@ void test_FighterVector(){
 	T.push_back(std::move(actor_4));
 	T.push_back(std::move(actor_5));
 
-//	for (unsigned int i=0; i< T.size(); ++i){
-//		std::cout<<T[i]->name()<<std::endl;
-//		std::cout<<T[i]->type()<<std::endl;
-//		std::cout<<T[i]->baseType()<<std::endl;
-//		std::cout<<T[i]->current_HP()<<std::endl;
-//		T[i]->takeDamage(1);
-//		std::cout<<T[i]->current_HP()<<std::endl;
-//		T[i]->talk();
-//		int temp = T[i]->attack();
-//		std::cout<<"attack: "<<temp<<std::endl;
-//		std::cout<<"----------------------------"<<std::endl;
-//	}
+	for (unsigned int i=0; i< T.size(); ++i){
+		std::cout<<T[i]->name()<<std::endl;
+		std::cout<<T[i]->type()<<std::endl;
+		std::cout<<T[i]->baseType()<<std::endl;
+		std::cout<<T[i]->current_HP()<<std::endl;
+		T[i]->takeDamage(1);
+		std::cout<<T[i]->current_HP()<<std::endl;
+		T[i]->talk();
+		int temp = T[i]->attack();
+		std::cout<<"attack: "<<temp<<std::endl;
+		std::cout<<"----------------------------"<<std::endl;
+	}
 
 	std::cout<<"Loot the actors :P"<<std::endl;
 	for (unsigned int i=0; i< T.size(); ++i){

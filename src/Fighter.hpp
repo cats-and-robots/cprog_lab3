@@ -26,8 +26,12 @@ public:
 	virtual void talk() = 0;
 	virtual void stats() const = 0;
 	int current_HP() const{return current_HP_;}
-	void takeDamage(int d){current_HP_-=d;}
 	std::string name() const{return name_;}
+	void takeDamage(int d){
+		current_HP_-=d;
+		if (current_HP_ < 0) current_HP_ = 0;
+		if (current_HP_ > max_HP_) current_HP_ = max_HP_;
+	}
 
 };
 

@@ -20,10 +20,9 @@ using p_R = std::shared_ptr<Room>;
 
 class cmd{
 public:
-
 	virtual ~cmd(){};
 	virtual std::pair< p_P, p_R > execute(p_P, p_R, std::string) = 0;
-
+protected:
 	int read_int() const{
 		std::string input = "";
 		int int_input = 0;

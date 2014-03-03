@@ -1,6 +1,6 @@
 src/EvilRobot.d: ../src/EvilRobot.cpp ../src/EvilRobot.hpp \
  ../src/Robot.hpp ../src/Fighter.hpp ../src/Inventory.hpp ../src/Item.hpp \
- ../src/Object.hpp ../src/Weapon.hpp
+ ../src/Object.hpp ../src/Weapon.hpp ../src/Potion.hpp
 
 ../src/EvilRobot.hpp:
 
@@ -15,3 +15,5 @@ src/EvilRobot.d: ../src/EvilRobot.cpp ../src/EvilRobot.hpp \
 ../src/Object.hpp:
 
 ../src/Weapon.hpp:
+
+../src/Potion.hpp:

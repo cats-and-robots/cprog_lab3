@@ -27,6 +27,8 @@ public:
 	virtual int attack();
 	virtual void talk();
 	virtual void stats() const;
+	bool isEquipped_RH() const;
+	bool isEquipped_LH() const;
 	void equip_RH(std::unique_ptr<Object>);
 	void equip_LH(std::unique_ptr<Object>);
 	std::unique_ptr<Object> unequip_RH();

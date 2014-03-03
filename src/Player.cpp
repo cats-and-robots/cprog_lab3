@@ -51,6 +51,15 @@ void Player::stats() const{
 	std::cout<<"Left hand: "  << ( (LH_ != NULL) ? LH_->name() : "-" )<<std::endl;
 }
 
+bool Player::isEquipped_RH() const{
+	if (this->RH_) return true;
+	else return false;
+}
+bool Player::isEquipped_LH() const{
+	if (this->LH_) return true;
+	else return false;
+}
+
 void Player::equip_RH(std::unique_ptr<Object> r_wep){
 	RH_ = std::move(r_wep);
 }

@@ -12,6 +12,7 @@
 #include <vector>
 #include "Item.hpp"
 #include "Weapon.hpp"
+#include "Potion.hpp"
 
 class Inventory {
 
