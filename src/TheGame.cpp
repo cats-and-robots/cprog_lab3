@@ -97,10 +97,8 @@ void TheGame::take_command(){
 
 	if (pos_found!=std::string::npos){
 		command = input.substr(0,pos_found);
-		if (command == "equip" || command == "unequip" ||
-				command == "look"){
+		if (command == "equip" || command == "unequip" ||command == "look")
 			command = input; //the command does not carry any object
-		}
 		else
 			object = input.substr(pos_found+1);
 	}
