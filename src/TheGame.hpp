@@ -18,8 +18,8 @@
 #include "Room.hpp"
 
 
-#include "../cmd/help.hpp"
-//#include "../cmd/inventory.hpp"
+#include "../cmd/cmd_help.hpp"
+#include "../cmd/cmd_inventory.hpp"
 
 #include <iostream>
 #include <string>

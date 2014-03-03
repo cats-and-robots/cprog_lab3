@@ -51,6 +51,10 @@ void TheGame::load_cmds(){
 	p_cmd cmd_help(new help);
 	cmds_.insert (std::pair< std::string, p_cmd >
 		("help",std::move(cmd_help)) );
+
+	p_cmd cmd_inventory(new inventory);
+	cmds_.insert (std::pair< std::string, p_cmd >
+		("inventory",std::move(cmd_inventory)) );
 }
 
 bool TheGame::cmd_exist(std::string input_cmd) const{
