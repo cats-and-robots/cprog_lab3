@@ -96,6 +96,16 @@ void Room::enter(std::unique_ptr<Fighter> actor){
 		(actor->name(),std::move(actor)) );
 }
 
+void Room::enter_all(std::vector< std::unique_ptr<Fighter> >& actors){
+	std::vector< std::string > actors_name;
+	for (auto iter = actors.begin(); iter != actors.end(); ++iter){
+		actors_name.push_back( (*iter)->name() );
+	}
+	for (unsigned int i = 0; i<actors_name.size(); ++i){
+		this->enter( std::move(actors[i]) );
+	}
+}
+
 std::unique_ptr<Fighter> Room::leave(std::string name){
 	for (auto iter = actors_.find(name); iter != actors_.end(); ++iter){
 		if (iter->first == name){
@@ -105,4 +115,16 @@ std::unique_ptr<Fighter> Room::leave(std::string name){
 		}
 	}
 	return nullptr;
+}
+
+std::vector< std::unique_ptr<Fighter> > Room::leave_all(){
+	std::vector< std::unique_ptr<Fighter> > actors;
+	std::vector< std::string > actors_name;
+	for (auto iter = actors_.begin(); iter != actors_.end(); ++iter){
+		actors_name.push_back(iter->first);
+	}
+	for (auto iter_name = actors_name.begin(); iter_name != actors_name.end(); ++iter_name){
+		actors.push_back(this->leave(*iter_name));
+	}
+	return actors;
 }

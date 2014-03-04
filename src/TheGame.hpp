@@ -54,7 +54,7 @@ using p_cmd = std::unique_ptr<cmd>;
 class TheGame{
 private:
 	p_P Hero_;
-	p_R currentRoom_;
+	p_R current_room_;
 	std::map<std::string, p_cmd > cmds_;
 	std::vector<p_R> all_rooms_;
 	bool continue_game_;
@@ -64,7 +64,7 @@ private:
 	std::string read_string() const;
 	void lex_analys(const std::string&, std::string&, std::string&) const;
 	void take_command();
-	//battle
+	void battle();
 
 public:
 	TheGame(); //will create all the rooms, actors and items etc.

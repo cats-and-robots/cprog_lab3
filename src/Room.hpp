@@ -41,7 +41,9 @@ public:
 	std::shared_ptr<Room> exit_room();
 
 	void enter(std::unique_ptr<Fighter> );
+	void enter_all(std::vector< std::unique_ptr<Fighter> > &);
 	std::unique_ptr<Fighter> leave(std::string name);
+	std::vector< std::unique_ptr<Fighter> > leave_all();
 
 };
 

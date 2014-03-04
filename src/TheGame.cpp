@@ -31,9 +31,9 @@ TheGame::TheGame(){
 	bathroom->link_exit(second_floor);
 
 	//set starting room
-	currentRoom_ = entrance;
+	current_room_ = entrance;
 	std::cout<<"Entrance: "<<entrance->name()<<std::endl;
-//	currentRoom_ = main_hall;
+//	current_room_ = main_hall;
 
 
 	//create items and weapons
@@ -57,8 +57,8 @@ TheGame::TheGame(){
 	Hero_->inventory->put(std::move(big_potion));
 	Hero_->inventory->put(std::move(small_poison));
 	Hero_->inventory->put(std::move(big_poison));
-	currentRoom_->put(std::move(google_glass));
-	currentRoom_->enter(std::move(cat));
+	current_room_->put(std::move(google_glass));
+	current_room_->enter(std::move(cat));
 
 	//save all the room pointers in a vector
 	all_rooms_.push_back(std::move(entrance));
@@ -191,22 +191,37 @@ void TheGame::take_command(){
 	if (!cmd_exist(command))
 		std::cout<<"Command <"<<command<<"> does not exist!"<<std::endl;
 	else
-		std::tie(Hero_,currentRoom_) = cmds_[command]->
-		execute(std::move(Hero_), std::move(currentRoom_), object);
+		std::tie(Hero_,current_room_) = cmds_[command]->
+		execute(std::move(Hero_), std::move(current_room_), object);
 
 }
 
+void TheGame::battle(){
+	std::cout<<"Called method battle..."<<std::endl;
+	std::vector<p_F> enemies = current_room_->leave_all();
+	if (enemies.size()>0){
+		for (auto iter = enemies.begin(); iter != enemies.end(); ++iter){
+			std::cout<<(*iter)->name()<<std::endl;
+		}
+		current_room_->enter_all(enemies);
+	}
+	else
+		std::cout<<"No enemies to battle."<<std::endl;
+
+
+}
 
 //////////////////////////////////////////////////////////////////////
 void TheGame::playTheGame(){
 	std::cout<<"PUT IN GAME LOGIC HERE!!!"<<std::endl;
-//	currentRoom_->description();
-//	currentRoom_->directions();
+//	current_room_->description();
+//	current_room_->directions();
 //	Hero_->stats();
 
 	continue_game_ = true;
 	while (continue_game_){
 		this->take_command();
+		battle();
 	}
 	std::cout<<"Good bye!"<<std::endl;
 }
