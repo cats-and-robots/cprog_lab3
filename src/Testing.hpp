@@ -131,12 +131,15 @@ void test_Player(){
 	std::unique_ptr<Fighter> cr1(new CafeRobot("R2D2"));
 
 	std::cout<<"\n\nWill fight with "<<ec1->name()<<std::endl;
-	ec1 = p1->fight( std::move(ec1) );
+	p1->fight( ec1 );
 	p1->stats();
 	ec1->stats();
+	std::cout<<"\n\nWill fight with "<<er1->name()<<std::endl;
+	p1->fight( er1 );
+	p1->stats();
 	er1->stats();
-	c1->stats();
-	cr1->stats();
+//	c1->stats();
+//	cr1->stats();
 
 
 }

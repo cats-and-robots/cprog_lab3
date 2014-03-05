@@ -22,6 +22,7 @@ private:
 public:
 	explicit Player(std::string);
 	virtual ~Player();
+	bool do_battle;
 	virtual std::string type() const;
 	virtual std::string baseType() const;
 	virtual int attack();
@@ -33,7 +34,8 @@ public:
 	void equip_LH(std::unique_ptr<Object>);
 	std::unique_ptr<Object> unequip_RH();
 	std::unique_ptr<Object> unequip_LH();
-	std::unique_ptr<Fighter> fight(std::unique_ptr<Fighter> );
+//	std::unique_ptr<Fighter> fight(std::unique_ptr<Fighter> );
+	void fight(std::unique_ptr<Fighter> & );
 
 };
 

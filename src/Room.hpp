@@ -44,6 +44,7 @@ public:
 	void enter_all(std::vector< std::unique_ptr<Fighter> > &);
 	std::unique_ptr<Fighter> leave(std::string name);
 	std::vector< std::unique_ptr<Fighter> > leave_all();
+	std::vector< std::unique_ptr<Fighter> > leave_all_evil();
 
 };
 

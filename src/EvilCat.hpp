@@ -18,6 +18,7 @@ public:
 	virtual ~EvilCat();
 
 	virtual std::string type() const;
+	virtual int attack();
 	virtual void talk();
 	virtual void stats() const;
 

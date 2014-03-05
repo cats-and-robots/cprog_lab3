@@ -19,6 +19,17 @@ std::string EvilCat::type() const{
 	return "EvilCat";
 }
 
+int EvilCat::attack(){
+	std::srand(time(NULL)); //generare different randomizations
+	std::cout<<"Hit enter to let "<<this->name()<<" roll the dice! ";
+	char tmp;
+	tmp = std::cin.get();
+	int dice_toss = 1 + rand() % 6; //1 to 6
+	std::cout<<"The dice shows "<<dice_toss<<" points!"<<std::endl;
+	int power = ATK_+dice_toss;
+	return power;
+}
+
 void EvilCat::talk(){
 	std::cout<<"\nkekekekek! *_*"<<"\n\n";
 }

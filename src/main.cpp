@@ -25,14 +25,14 @@ int main(){
 
 
 //	test_Room();
-//	test_Player();
+	test_Player();
 //	test_attack();
 //	test_FighterVector();
 
 
 //-------------------------------------------------------------------------
 	TheGame g;
-	g.playTheGame();
+//	g.playTheGame();
 
 	return 0;
 

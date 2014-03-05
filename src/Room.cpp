@@ -125,3 +125,16 @@ std::vector< std::unique_ptr<Fighter> > Room::leave_all(){
 	}
 	return actors;
 }
+
+std::vector< std::unique_ptr<Fighter> > Room::leave_all_evil(){
+	std::vector< std::unique_ptr<Fighter> > actors;
+	std::vector< std::string > actors_name;
+	for (auto iter = actors_.begin(); iter != actors_.end(); ++iter){
+		if (iter->second->type() == "EvilCat" || iter->second->type() == "EvilRobot")
+			actors_name.push_back(iter->first);
+	}
+	for (auto iter_name = actors_name.begin(); iter_name != actors_name.end(); ++iter_name){
+		actors.push_back(this->leave(*iter_name));
+	}
+	return actors;
+}

@@ -49,8 +49,8 @@ TheGame::TheGame(){
 	p_P tmp(new Player("Hero"));
 	Hero_ = std::move(tmp);
 	p_F cat_1(new Cat("Siamese"));
-	p_F cat_2(new Cat("Scottish Fold"));
-	p_F cat_3(new Cat("Munchkin"));
+	p_F cat_2(new EvilCat("Scottish Fold"));
+	p_F cat_3(new EvilRobot("Terminator"));
 
 	//insert items/weapons on actors and rooms
 	Hero_->inventory->put(std::move(small_knife));
@@ -198,11 +198,12 @@ void TheGame::take_command(){
 		std::tie(Hero_,current_room_) = cmds_[command]->
 		execute(std::move(Hero_), std::move(current_room_), object);
 
+
 }
 
 void TheGame::battle(){
 	std::cout<<"Called method battle..."<<std::endl;
-	std::vector<p_F> enemies = current_room_->leave_all();
+	std::vector<p_F> enemies = current_room_->leave_all_evil();
 	if (enemies.size()>0){
 		for (auto iter = enemies.begin(); iter != enemies.end(); ++iter){
 			std::cout<<(*iter)->name()<<std::endl;
@@ -224,8 +225,12 @@ void TheGame::playTheGame(){
 
 	continue_game_ = true;
 	while (continue_game_){
+		Hero_->do_battle = false;
 		this->take_command();
-		battle();
+		//talking to an Evil actor changes do_battle to true
+		if(Hero_->do_battle){
+			battle();
+		}
 	}
 	std::cout<<"Good bye!"<<std::endl;
 }
