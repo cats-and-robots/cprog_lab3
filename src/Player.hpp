@@ -26,7 +26,7 @@ public:
 	virtual std::string type() const;
 	virtual std::string baseType() const;
 	virtual int attack();
-	virtual void talk();
+	virtual std::unique_ptr<Inventory> talk();
 	virtual void stats() const;
 	bool isEquipped_RH() const;
 	bool isEquipped_LH() const;

@@ -4,7 +4,7 @@
  *  Created on: 11 feb 2014
  *      Author: findus
  */
-#include "Animal.hpp"
+
 #include "Cat.hpp"
 
 Cat::Cat(std::string name)
@@ -32,7 +32,9 @@ std::string Cat::type() const{
 	return "Cat";
 }
 
-void Cat::talk(){
+std::unique_ptr<Inventory> Cat::talk(){
 	std::cout<<"\nNnyyyaa nnnyyaaa! =^w^= \n\n";
+	if (this->inventory) return std::move(this->inventory);
+	else return nullptr;
 }
 

@@ -32,6 +32,7 @@ int main(){
 
 //-------------------------------------------------------------------------
 	TheGame g;
+	std::cout<<"Calling playTheGame..."<<std::endl;
 	g.playTheGame();
 
 	return 0;

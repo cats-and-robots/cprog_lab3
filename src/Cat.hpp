@@ -18,7 +18,7 @@ public:
 	virtual ~Cat();
 
 	virtual std::string type() const;
-	virtual void talk();
+	virtual std::unique_ptr<Inventory> talk();
 
 };
 

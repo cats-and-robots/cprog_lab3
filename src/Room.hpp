@@ -24,9 +24,12 @@ private:
 	std::weak_ptr<Room> exit_;
 	std::string name_;
 	std::map<std::string, std::unique_ptr<Fighter> > actors_;
+	bool allowed_entrance_;
+	std::string use_code_;
 
 public:
-	Room(std::string);
+	explicit Room(std::string);
+	explicit Room(std::string, bool, std::string);
 	virtual ~Room();
 
 	std::string name() const;
@@ -36,6 +39,11 @@ public:
 	void link_exit(const std::shared_ptr<Room>& );
 	void directions() const;
 	void description() const;
+
+	bool use_item(std::string);
+	std::string get_use_code() const;
+	bool is_entrance_allowed() const;
+	void set_allowed_entrance(bool);
 
 	std::shared_ptr<Room> neighbor(const std::string);
 	std::shared_ptr<Room> exit_room();

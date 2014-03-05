@@ -8,17 +8,54 @@
 #include "TheGame.hpp"
 
 TheGame::TheGame(){
-	std::cout<<"Created a TheGame object!"<<std::endl;
-
 	//load commands into map cmds_
 	load_cmds();
 
+	std::cout<<"loaded the commands..."<<std::endl;
+	//create items and weapons
+	p_O google_glass(new Item("Google Glass", "Device to help you translate japanese to english", "google glass"));
+	p_O key_to_mansion(new Item("Rusty key", "Key that allows access to the mansion", "mansion key"));
+//	p_O small_knife(new Weapon("Small Knife", "A small kitchen knife", 2,0));
+//	p_O heavy_axe(new Weapon("Heavy Axe", "A big powerful axe", 10,3));
+//	p_O small_potion(new Potion("Small Potion", "Restores a small amount of your health", 10));
+//	p_O big_potion(new Potion("Big Potion", "Restores a lot of your health!", 110));
+//	p_O small_poison(new Potion("Small Poison", "Damage your health a little", -20));
+//	p_O big_poison(new Potion("Big Poison", "Damage your health a lot!", -120));
+
+
 	//Create rooms
 	p_R entrance(new Room("Entrance"));
-	p_R main_hall(new Room("Main hall"));
+	p_R main_hall(new Room("Mansion",false,key_to_mansion->use_code()));
 	p_R cat_cafe(new Room("Cat Café"));
 	p_R second_floor(new Room("Second floor"));
 	p_R bathroom(new Room("Bathroom"));
+
+
+	std::cout<<"created rooms..."<<std::endl;
+
+	//Create player and actors
+	p_P tmp(new Player("Hero"));
+	std::cout<<"1"<<std::endl;
+	Hero_ = std::move(tmp);
+	std::cout<<"2"<<std::endl;
+	p_F guardian_cat(new GuardianCat("Siamese", google_glass->use_code()));
+	std::cout<<"3"<<std::endl;
+	std::cout<<guardian_cat->name()<<std::endl;
+	std::cout<<key_to_mansion->name()<<std::endl;
+	guardian_cat->inventory->put(std::move(key_to_mansion));
+	std::cout<<"4"<<std::endl;
+	p_F cat_1(new Cat("Munchkin"));
+	std::cout<<"5"<<std::endl;
+	p_F cat_2(new EvilCat("Scottish Fold"));
+	std::cout<<"6"<<std::endl;
+	p_F robot_1(new EvilRobot("Terminator"));
+
+	std::cout<<"Created actors..."<<std::endl;
+
+
+	//put items and characters into the rooms
+	entrance->enter(std::move(guardian_cat));
+	entrance->put(std::move(google_glass));
 
 	//Link the rooms
 	entrance->link(main_hall);
@@ -30,41 +67,13 @@ TheGame::TheGame(){
 	second_floor->link_exit(main_hall);
 	bathroom->link_exit(second_floor);
 
+	std::cout<<"Linked the rooms..."<<std::endl;
 	//set starting room
 	current_room_ = entrance;
-	std::cout<<"Entrance: "<<entrance->name()<<std::endl;
-//	current_room_ = main_hall;
 
 
-	//create items and weapons
-	p_O small_knife(new Weapon("Small Knife", "A small kitchen knife", 2,0));
-	p_O heavy_axe(new Weapon("Heavy Axe", "A big powerful axe", 10,3));
-	p_O google_glass(new Item("Google Glass", "Device to help you translate japanese to english"));
-	p_O small_potion(new Potion("Small Potion", "Restores a small amount of your health", 10));
-	p_O big_potion(new Potion("Big Potion", "Restores a lot of your health!", 110));
-	p_O small_poison(new Potion("Small Poison", "Damage your health a little", -20));
-	p_O big_poison(new Potion("Big Poison", "Damage your health a lot!", -120));
-
-	//Create player and actors
-	p_P tmp(new Player("Hero"));
-	Hero_ = std::move(tmp);
-	p_F cat_1(new Cat("Siamese"));
-	p_F cat_2(new EvilCat("Scottish Fold"));
-	p_F robot_1(new EvilRobot("Terminator"));
-
-	//insert items/weapons on actors and rooms
-	Hero_->inventory->put(std::move(small_knife));
-	Hero_->inventory->put(std::move(heavy_axe));
-	Hero_->inventory->put(std::move(small_potion));
-	robot_1->inventory->put(std::move(big_potion));
-	robot_1->inventory->put(std::move(small_poison));
-	robot_1->inventory->put(std::move(big_poison));
-	current_room_->put(std::move(google_glass));
-	current_room_->enter(std::move(cat_1));
-	current_room_->enter(std::move(cat_2));
-	current_room_->enter(std::move(robot_1));
-
-	//save all the room pointers in a vector
+	std::cout<<"save all the rooms.."<<std::endl;
+	//save all the room pointers in a vector, or else the rooms will be destroyed when we switch room!
 	all_rooms_.push_back(std::move(entrance));
 	all_rooms_.push_back(std::move(main_hall));
 	all_rooms_.push_back(std::move(cat_cafe));
@@ -74,7 +83,7 @@ TheGame::TheGame(){
 }
 
 TheGame::~TheGame() {
-	std::cout<<"Destroyed a TheGame object!"<<std::endl;
+	std::cout<<"Destroyed TheGame object!"<<std::endl;
 }
 
 void TheGame::load_cmds(){
@@ -163,10 +172,10 @@ void TheGame::lex_analys(const std::string& input, std::string& command, std::st
  */
 
 	std::stringstream ss(input);
-	char delim = ' '; //split-character
+	char delim = ' ';
 	std::string elem;
 	bool command_found = false;
-	//split the input on each occurrence of space
+	//split the input on each occurrence of delim (space)
     while (std::getline(ss, elem, delim)) {
     	if ( ! command_found){
     		if(command.empty()) command += elem;
@@ -185,30 +194,29 @@ void TheGame::take_command(){
 	std::string command;
 	std::string object;
 	std::string input = read_string();
+	//debug command to kill the TheGame
 	if (input == "kill") {
 		continue_game_=false;
 		return;
 	}
-	lex_analys(input, command, object);
 
+	lex_analys(input, command, object);
 	//method that checks if the command exist
 	if (!cmd_exist(command))
 		std::cout<<"Command <"<<command<<"> does not exist!"<<std::endl;
 	else
 		std::tie(Hero_,current_room_) = cmds_[command]->
 		execute(std::move(Hero_), std::move(current_room_), object);
-
-
 }
 
 void TheGame::battle(){
-	std::cout<<"Called method battle..."<<std::endl;
 	std::vector<p_F> enemies = current_room_->leave_all_evil();
 	if (enemies.size()==0){
 		std::cout<<"No enemies to battle."<<std::endl;
 		return;
 	}
 
+	std::cout<<"\n\nTime for a battle!"<<std::endl;
 	std::cout<<"You are up against: "<<std::endl;
 	for (unsigned int i = 0; i<enemies.size(); ++i){
 		std::cout<<i+1<<": "<<enemies[i]->type()<<" "<<enemies[i]->name()<<std::endl;
@@ -247,20 +255,34 @@ void TheGame::battle(){
 		if (enemies.empty()) done_fighting = true;
 	}
 	if ( Hero_->isDead() ){
-		std::cout<<"You died!"<<std::endl;
+		std::cout<<"You died in battle!"<<std::endl;
 	}
 	else{
 		std::cout<<"All enemies are defeated!"<<std::endl;
 	}
-
-
 }
 
-//////////////////////////////////////////////////////////////////////
-void TheGame::playTheGame(){
-	std::cout<<"PUT IN GAME LOGIC HERE!!!"<<std::endl;
+void TheGame::intro() const{
+	std::vector<std::string> text_files_name;
+	text_files_name.push_back("TheGame_textfiles/bg_story.txt");
+	text_files_name.push_back("TheGame_textfiles/how_to_play.txt");
+	std::string line;
+	for (unsigned int i = 0; i<text_files_name.size(); ++i){
+		std::ifstream file(text_files_name[i]);
+		if (file.is_open()){
+			while ( std::getline (file,line) ){
+				std::cout<<line<<std::endl;
+			}
+			file.close();
+		}
+		else
+			std::cout << "Unable to open file ./" << text_files_name[i] <<std::endl;
 
+		std::cout<<std::endl<<std::endl;
+	}
+}
 
+void TheGame::stage_1(){
 	continue_game_ = true;
 	while (continue_game_){
 		Hero_->do_battle = false;
@@ -274,5 +296,13 @@ void TheGame::playTheGame(){
 			continue;
 		}
 	}
-	std::cout<<"Good bye!"<<std::endl;
+
+}
+//////////////////////////////////////////////////////////////////////
+void TheGame::playTheGame(){
+
+	intro();
+	stage_1();
+	if (Hero_->isDead()) return;
+
 }

@@ -19,7 +19,7 @@ public:
 
 	virtual std::string type() const;
 	virtual int attack();
-	virtual void talk();
+	virtual std::unique_ptr<Inventory> talk();
 	virtual void stats() const;
 
 };

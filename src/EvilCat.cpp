@@ -30,8 +30,9 @@ int EvilCat::attack(){
 	return power;
 }
 
-void EvilCat::talk(){
+std::unique_ptr<Inventory> EvilCat::talk(){
 	std::cout<<"\nkekekekek! *_*"<<"\n\n";
+	return nullptr;
 }
 
 void EvilCat::stats() const{

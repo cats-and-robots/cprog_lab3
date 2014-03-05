@@ -1,0 +1,5 @@
+CREDITS
+
+This game was created by Andreas Pettersson 2014-03-05 for the 
+course DD2387 - "Program System Construction Using C++"
+at the Royal Institute of Technology in Sweden.  

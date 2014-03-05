@@ -8,11 +8,11 @@
 #ifndef WEAPON_HPP_
 #define WEAPON_HPP_
 
-//#include "Item.hpp"
-#include "Object.hpp"
+#include "Item.hpp"
+//#include "Object.hpp"
 
-//class Weapon:public Item {
-class Weapon:public Object {
+class Weapon:public Item {
+//class Weapon:public Object {
 private:
 	int ATK_;
 	int DEF_;

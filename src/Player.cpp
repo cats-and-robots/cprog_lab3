@@ -16,7 +16,6 @@ Player::Player(std::string name){
 	do_battle = false;
 	std::unique_ptr<Inventory> inv(new Inventory);
 	this->inventory = std::move(inv);
-	std::cout<<"Created "<<this->type()<<" "<<this->name()<<std::endl;
 }
 
 Player::~Player() {
@@ -44,8 +43,9 @@ int Player::attack() {
 	return power;
 }
 
-void Player::talk(){
+std::unique_ptr<Inventory> Player::talk(){
 	std::cout<<"\nI am "<<name()<<"!\n\n";
+	return nullptr;
 }
 
 void Player::stats() const{

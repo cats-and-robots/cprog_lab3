@@ -14,7 +14,8 @@ class Item: public Object{
 public:
 
 	Item();
-	explicit Item(std::string,std::string);
+	explicit Item(std::string, std::string);
+	explicit Item(std::string, std::string, std::string);
 	virtual ~Item();
 
 	virtual int getATK() const;

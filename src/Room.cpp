@@ -7,7 +7,11 @@
 
 #include "Room.hpp"
 
-Room::Room(std::string name):name_(name){}
+Room::Room(std::string name):
+name_(name), allowed_entrance_(true), use_code_("_") {}
+
+Room::Room(std::string name, bool room_access, std::string use_code):
+name_(name), allowed_entrance_(room_access), use_code_(use_code) {}
 
 Room::~Room(){ std::cout<<"Destroyed Room "<<name()<<std::endl;}
 
@@ -68,6 +72,46 @@ void Room::description() const{
 	std::cout<<"\n";
 	std::cout<<"--------------------------------------------"<<std::endl;
 }
+
+std::string Room::get_use_code() const{
+	return use_code_;
+}
+
+bool Room::is_entrance_allowed() const{
+	return allowed_entrance_;
+}
+
+void Room::set_allowed_entrance(bool access){
+	allowed_entrance_ = access;
+}
+
+bool Room::use_item(std::string use_code){
+	//check if the item's code can be used for the room we are currently in
+	if (this->get_use_code() == use_code){
+		allowed_entrance_ = true;
+		return true;
+	}
+
+	else{
+		//check if it can be used on a character in the room
+		for (auto iter = actors_.begin(); iter != actors_.end(); ++iter){
+			if ( iter->second->use(use_code) ){
+				return true;
+			}
+		}
+
+		//check if it can be used to unlock a neighbor area
+		for (unsigned int i = 0; i<neighbors_.size(); ++i){
+			if (neighbors_[i]->get_use_code() == use_code){
+				neighbors_[i]->set_allowed_entrance(true);
+				return true;
+			}
+		}
+	}
+	//if we got here, then the item's code could not be used in this area on anything!
+	return false;
+}
+
 
 std::shared_ptr<Room> Room::neighbor(const std::string name){
 	for (unsigned int i = 0; i<neighbors_.size(); ++i){

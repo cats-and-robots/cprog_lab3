@@ -8,6 +8,7 @@
 #ifndef FIGHTER_HPP_
 #define FIGHTER_HPP_
 #include <string>
+#include <memory> //smart pointers
 #include "Inventory.hpp"
 class Fighter {
 protected:
@@ -23,8 +24,10 @@ public:
 	virtual std::string type() const = 0;
 	virtual std::string baseType() const = 0;
 	virtual int attack() =0;
-	virtual void talk() = 0;
+//	virtual void talk() = 0;
+	virtual std::unique_ptr<Inventory> talk() = 0;
 	virtual void stats() const = 0;
+	virtual bool use(std::string){return false;}
 	int current_HP() const{return current_HP_;}
 	std::string name() const{return name_;}
 	void takeDamage(int d){

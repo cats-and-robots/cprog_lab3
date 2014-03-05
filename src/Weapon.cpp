@@ -7,22 +7,16 @@
 
 #include "Weapon.hpp"
 
-Weapon::Weapon()
-//Item::Item()
+Weapon::Weapon():
+Item::Item()
 {
-	name_="";
-	info_="";
-	use_= 0;
 	ATK_ = 0;
 	DEF_ = 0;
 }
 
-Weapon::Weapon(std::string name,std::string info,int atk,int def)
-//Item::Item(name,info)
+Weapon::Weapon(std::string name,std::string info,int atk,int def):
+Item::Item(name,info)
 {
-	name_=name;
-	info_=info;
-	use_= 0;
 	ATK_ = atk;
 	DEF_ = def;
 }

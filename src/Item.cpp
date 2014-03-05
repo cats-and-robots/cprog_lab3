@@ -11,14 +11,24 @@ Item::Item()
 {
 	name_="";
 	info_="";
-	use_= 1;
+	use_code_ = "";
+	use_value_= 0;
 }
 
 Item::Item(std::string name, std::string info)
 {
 	name_=name;
 	info_=info;
-	use_= 1;
+	use_code_ = "";
+	use_value_= 0;
+}
+
+Item::Item(std::string name, std::string info, std::string code)
+{
+	name_=name;
+	info_=info;
+	use_code_ = code;
+	use_value_= 0;
 }
 
 Item::~Item(){}

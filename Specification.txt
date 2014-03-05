@@ -1,0 +1,66 @@
+TO DO:
+- en ny katt-klass som kommer att bete sig annorlunda om vi har
+google glass i inventory (i Entrance)
+- finjustera HP
+- Placera ut allt i TheGame!
+
+
+NOTES:
+- To store different classes from same derived baseclass, create a container
+of pointers to the baseclass. If you store (move) the pointers that have
+allocated new objects, you can reach each method from them using the virtual
+methods from the baseclass!
+
+	std::vector< std::unique_ptr<Animal> > animals;
+	std::unique_ptr<Animal> animal1(new Cat("Siamese"));
+	std::unique_ptr<Animal> animal2(new EvilCat("Sgt Meowth", 100,10,8));
+
+	animals.push_back(std::move(animal1));
+	animals.push_back(std::move(animal2));
+	for (unsigned int i=0; i<animals.size(); ++i){
+		std::cout<<*animals[i]<<std::endl;
+		std::cout<<animals[i]->type()<<std::endl;
+		animals[i]->Roar();
+	}
+
+
+CLASSES:
+TheGame:
+*private
+	- TheGame()
+	- Player hero //the player
+	- Room currentRoom 
+	- Room& createRooms() //Creates all the rooms, fill them with items and actors. Returns the room where we will start. 
+	- void go(std::string direction) //use currentRoom.neighbor(direction). If currentRoom is not NULL, set currentRoom = currentRoom.neighbor(direction)
+*public:
+	- void playTheGame() //contains the logic of the game! because hero and currentRoom are attributes, we can allways reach them from inside this method! 
+
+//how the main-function will look like!
+int main(){
+	TheGame g();
+	g.playTheGame();
+	return 0;
+}
+
+
+Commands:
+use a baseclass Command and create supclasses for each command.
+the base class will have 1 execute:
+(Player, Room) = execute(Player,Room, string)
+use std::pair from <utility>
+Remove class Commands and put the methods inside TheGame
+
+subclasses: 
+- help (print all command)
+- inventory (see inventory) *needs Player
+- stats (see Hero's stats) *needs Player
+- equip righthand *needs Player
+- equip lefthand *needs Player
+- unequip righthand *needs Player
+- unequip lefthand *needs Player
+- look around (print out everything in the room) *needs current room
+- take <object> *needs to see current rooms inventory
+- talk to <Fighter> (will sometimes initiate a battle) *needs to see all actors
+- go to <Room> (switch room) *needs current room
+- use <Item> (ex potion) *needs Player
+

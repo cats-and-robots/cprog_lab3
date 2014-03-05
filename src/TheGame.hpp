@@ -9,11 +9,8 @@
 #define THEGAME_HPP_
 
 #include "Player.hpp"
-#include "Cat.hpp"
 #include "EvilCat.hpp"
-#include "Item.hpp"
-#include "Weapon.hpp"
-#include "Potion.hpp"
+#include "GuardianCat.hpp"
 #include "CafeRobot.hpp"
 #include "EvilRobot.hpp"
 #include "Room.hpp"
@@ -65,6 +62,9 @@ private:
 	void lex_analys(const std::string&, std::string&, std::string&) const;
 	void take_command();
 	void battle();
+
+	void intro() const;
+	void stage_1();
 
 public:
 	TheGame(); //will create all the rooms, actors and items etc.

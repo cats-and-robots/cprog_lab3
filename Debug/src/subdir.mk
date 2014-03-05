@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/Cat.cpp \
 ../src/EvilCat.cpp \
 ../src/EvilRobot.cpp \
+../src/GuardianCat.cpp \
 ../src/Inventory.cpp \
 ../src/Item.cpp \
 ../src/Player.cpp \
@@ -22,6 +23,7 @@ OBJS += \
 ./src/Cat.o \
 ./src/EvilCat.o \
 ./src/EvilRobot.o \
+./src/GuardianCat.o \
 ./src/Inventory.o \
 ./src/Item.o \
 ./src/Player.o \
@@ -36,6 +38,7 @@ CPP_DEPS += \
 ./src/Cat.d \
 ./src/EvilCat.d \
 ./src/EvilRobot.d \
+./src/GuardianCat.d \
 ./src/Inventory.d \
 ./src/Item.d \
 ./src/Player.d \

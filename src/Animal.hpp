@@ -20,7 +20,7 @@ public:
 	virtual std::string type() const = 0;
 	virtual std::string baseType() const{return "Animal";}
 	virtual int attack() {return ATK_;}
-	virtual void talk() = 0;
+	virtual std::unique_ptr<Inventory> talk() = 0;
 	virtual void stats() const{std::cout<<"Name: " << name() << "\nType: "<< type()<<std::endl;}
 
 };

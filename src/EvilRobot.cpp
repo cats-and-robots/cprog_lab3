@@ -88,8 +88,9 @@ int EvilRobot::attack(){
 	return return_value;
 }
 
-void EvilRobot::talk(){
+std::unique_ptr<Inventory> EvilRobot::talk(){
 	std::cout<<"\n*BLIP-BLOP* Solve my quizzes!!! *BUZZ*"<<"\n\n";
+	return nullptr;
 }
 
 void EvilRobot::stats() const{
@@ -154,14 +155,5 @@ void EvilRobot::loadQuizzes(){
 	}
 	//shuffle quizzes
 	std::random_shuffle( quizzes_.begin(), quizzes_.end() );
-
-//		for (unsigned int i=0; i<quizzes_.size(); ++i){
-//			std::cout<<quizzes_[i]->question_<<std::endl;
-//			std::cout<<quizzes_[i]->answer_<<std::endl;
-//			for (unsigned int j=0; j<quizzes_[i]->options_.size(); ++j){
-//				std::cout<<quizzes_[i]->options_[j]<<std::endl;
-//			}
-//		}
-
 
 }

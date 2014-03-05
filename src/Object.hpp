@@ -15,7 +15,8 @@ class Object{
 protected:
 	std::string name_;
 	std::string info_;
-	int use_;
+	std::string use_code_;
+	int use_value_;
 
 public:
 
@@ -26,7 +27,8 @@ public:
 	virtual int getDEF() const = 0;
 	std::string name() const{return name_;}
 	std::string info() const{return info_;}
-	int use() const{return use_;}
+	std::string use_code() const{return use_code_;}
+	int use_value() const{return use_value_;}
 	std::string baseType() const{return "Object";}
 
 
