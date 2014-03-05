@@ -97,12 +97,9 @@ void Room::enter(std::unique_ptr<Fighter> actor){
 }
 
 void Room::enter_all(std::vector< std::unique_ptr<Fighter> >& actors){
-	std::vector< std::string > actors_name;
-	for (auto iter = actors.begin(); iter != actors.end(); ++iter){
-		actors_name.push_back( (*iter)->name() );
-	}
-	for (unsigned int i = 0; i<actors_name.size(); ++i){
-		this->enter( std::move(actors[i]) );
+	while(!actors.empty()){
+		this->enter( std::move( actors.back() ) );
+		actors.pop_back();
 	}
 }
 

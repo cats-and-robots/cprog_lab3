@@ -48,7 +48,9 @@ TheGame::TheGame(){
 	//Create player and actors
 	p_P tmp(new Player("Hero"));
 	Hero_ = std::move(tmp);
-	p_F cat(new Cat("Siamese"));
+	p_F cat_1(new Cat("Siamese"));
+	p_F cat_2(new Cat("Scottish Fold"));
+	p_F cat_3(new Cat("Munchkin"));
 
 	//insert items/weapons on actors and rooms
 	Hero_->inventory->put(std::move(small_knife));
@@ -58,7 +60,9 @@ TheGame::TheGame(){
 	Hero_->inventory->put(std::move(small_poison));
 	Hero_->inventory->put(std::move(big_poison));
 	current_room_->put(std::move(google_glass));
-	current_room_->enter(std::move(cat));
+	current_room_->enter(std::move(cat_1));
+	current_room_->enter(std::move(cat_2));
+	current_room_->enter(std::move(cat_3));
 
 	//save all the room pointers in a vector
 	all_rooms_.push_back(std::move(entrance));
