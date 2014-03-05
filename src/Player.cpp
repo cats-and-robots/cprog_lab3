@@ -82,6 +82,7 @@ std::unique_ptr<Object> Player::unequip_LH(){
 
 //std::unique_ptr<Fighter> Player::fight(std::unique_ptr<Fighter> actor){
 void Player::fight(std::unique_ptr<Fighter>& actor){
+	std::cout<<this->name()<<" will now fight against "<<actor->type()<<" "<<actor->name()<<"!"<<std::endl;
 	if (actor->type() == "EvilRobot"){
 		int quiz_result = actor->attack();
 		/* For different values from calling attack()

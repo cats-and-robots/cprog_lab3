@@ -44,6 +44,10 @@ std::string EvilRobot::type() const{
 
 
 int EvilRobot::attack(){
+	std::cout<<this->type()<<" "<<this->name()<<" is now going to ask you a robot quiz!"<<std::endl;
+	std::cout<<"Hit enter to see the quiz!";
+	char tmp;
+	tmp = std::cin.get();
 	//Show the question
 	std::cout<<quizzes_[current_Quiz_index_]->question_<<std::endl;
 	//show the alternatives
@@ -107,7 +111,7 @@ int EvilRobot::read_int() const{
 }
 
 void EvilRobot::loadQuizzes(){
-	std::srand(time(NULL)); //generare different randomizations
+	std::srand(time(NULL)); //generate different randomizations
 
 	std::string code_for_answer = "#ANSWER:";
 	std::string code_for_alt = "#ALT:";

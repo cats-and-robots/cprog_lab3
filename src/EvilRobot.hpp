@@ -11,7 +11,6 @@
 
 
 #include "Robot.hpp"
-#include "Inventory.hpp"
 #include <vector>
 #include <memory> //smart pointers
 #include <algorithm> //for shuffle

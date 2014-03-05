@@ -75,11 +75,6 @@ std::shared_ptr<Room> Room::neighbor(const std::string name){
 			return neighbors_[i];
 	}
 	return nullptr;
-//	unsigned int index = room_nr-1;
-//	if (index > neighbors_.size() || index < 0)
-//		return nullptr;
-//	else
-//		return neighbors_[index];
 }
 
 std::shared_ptr<Room> Room::exit_room(){

@@ -50,19 +50,19 @@ TheGame::TheGame(){
 	Hero_ = std::move(tmp);
 	p_F cat_1(new Cat("Siamese"));
 	p_F cat_2(new EvilCat("Scottish Fold"));
-	p_F cat_3(new EvilRobot("Terminator"));
+	p_F robot_1(new EvilRobot("Terminator"));
 
 	//insert items/weapons on actors and rooms
 	Hero_->inventory->put(std::move(small_knife));
 	Hero_->inventory->put(std::move(heavy_axe));
 	Hero_->inventory->put(std::move(small_potion));
-	Hero_->inventory->put(std::move(big_potion));
-	Hero_->inventory->put(std::move(small_poison));
-	Hero_->inventory->put(std::move(big_poison));
+	robot_1->inventory->put(std::move(big_potion));
+	robot_1->inventory->put(std::move(small_poison));
+	robot_1->inventory->put(std::move(big_poison));
 	current_room_->put(std::move(google_glass));
 	current_room_->enter(std::move(cat_1));
 	current_room_->enter(std::move(cat_2));
-	current_room_->enter(std::move(cat_3));
+	current_room_->enter(std::move(robot_1));
 
 	//save all the room pointers in a vector
 	all_rooms_.push_back(std::move(entrance));
@@ -204,14 +204,54 @@ void TheGame::take_command(){
 void TheGame::battle(){
 	std::cout<<"Called method battle..."<<std::endl;
 	std::vector<p_F> enemies = current_room_->leave_all_evil();
-	if (enemies.size()>0){
-		for (auto iter = enemies.begin(); iter != enemies.end(); ++iter){
-			std::cout<<(*iter)->name()<<std::endl;
-		}
-		current_room_->enter_all(enemies);
-	}
-	else
+	if (enemies.size()==0){
 		std::cout<<"No enemies to battle."<<std::endl;
+		return;
+	}
+
+	std::cout<<"You are up against: "<<std::endl;
+	for (unsigned int i = 0; i<enemies.size(); ++i){
+		std::cout<<i+1<<": "<<enemies[i]->type()<<" "<<enemies[i]->name()<<std::endl;
+	}
+	std::srand(time(NULL)); //generate different randomizations
+	bool done_fighting  = false;
+	int round = 1;
+	while( ! done_fighting ){
+		std::cout<<"\n\nRound "<<round++<<"!\n"<<std::endl;
+		std::random_shuffle( enemies.begin(), enemies.end() ); //shuffle the order of enemies encounters
+		for (auto iter = enemies.begin(); iter != enemies.end(); ++iter){
+			Hero_->fight( *iter ); //one round
+			if (Hero_->isDead()){
+				done_fighting = true;
+				break; //we are dead, don't fight anymore
+			}
+			if ( (*iter)->isDead() ){
+				std::cout<< (*iter)->type() <<" "<< (*iter)->name() <<" fainted!"<<std::endl;
+				//loot the enemy if possible
+				if ( (*iter)->inventory ){
+					std::vector< p_O > loot = (*iter)->inventory->loot();
+					if (loot.size()>0){
+						std::cout<< (*iter)->type() <<" "<< (*iter)->name() <<" dropped the following stuff:"<<std::endl;
+						for (unsigned int i = 0; i<loot.size(); ++i){
+							std::cout<<i+1<<": <"<<loot[i]->type()<<"> "<<loot[i]->name()<<std::endl;
+						}
+						Hero_->inventory->put_all(loot);
+					}
+				}
+			}
+		}
+		//Erase-remove idiom to remove dead enemies
+		enemies.erase( std::remove_if(std::begin(enemies), std::end(enemies),
+				[](p_F const & enemy) -> bool {return enemy->isDead(); }), std::end(enemies) );
+
+		if (enemies.empty()) done_fighting = true;
+	}
+	if ( Hero_->isDead() ){
+		std::cout<<"You died!"<<std::endl;
+	}
+	else{
+		std::cout<<"All enemies are defeated!"<<std::endl;
+	}
 
 
 }
@@ -219,9 +259,7 @@ void TheGame::battle(){
 //////////////////////////////////////////////////////////////////////
 void TheGame::playTheGame(){
 	std::cout<<"PUT IN GAME LOGIC HERE!!!"<<std::endl;
-//	current_room_->description();
-//	current_room_->directions();
-//	Hero_->stats();
+
 
 	continue_game_ = true;
 	while (continue_game_){
@@ -230,6 +268,10 @@ void TheGame::playTheGame(){
 		//talking to an Evil actor changes do_battle to true
 		if(Hero_->do_battle){
 			battle();
+		}
+		if (Hero_->isDead()){
+			continue_game_ = false;
+			continue;
 		}
 	}
 	std::cout<<"Good bye!"<<std::endl;

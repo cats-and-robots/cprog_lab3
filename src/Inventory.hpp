@@ -24,6 +24,7 @@ public:
 	virtual ~Inventory();
 
 	void put(std::unique_ptr<Object> );
+	void put_all( std::vector< std::unique_ptr<Object> > & );
 	std::unique_ptr<Object> take(std::string);
 	void show_inventory() const;
 	bool isEmpty() const;

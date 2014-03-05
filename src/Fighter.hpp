@@ -32,6 +32,7 @@ public:
 		if (current_HP_ < 0) current_HP_ = 0;
 		if (current_HP_ > max_HP_) current_HP_ = max_HP_;
 	}
+	bool isDead() const{return current_HP_ <= 0;}
 
 };
 

@@ -15,6 +15,13 @@ void Inventory::put(std::unique_ptr<Object> item){
 		(item->name(),std::move(item)) );
 }
 
+void Inventory::put_all(std::vector< std::unique_ptr<Object> >& items){
+	while( !items.empty() ){
+		this->put( std::move( items.back() ) );
+		items.pop_back();
+	}
+}
+
 std::unique_ptr<Object> Inventory::take(std::string name){
 	for (auto iter = items_.find(name); iter != items_.end(); ++iter){
 		if (iter->first == name){
@@ -65,10 +72,18 @@ std::vector<std::string> Inventory::get_weapons_name() const{
 
 std::vector< std::unique_ptr<Object> >  Inventory::loot(){
 	std::vector< std::unique_ptr<Object> > loot;
-	for (auto iter = items_.begin(); iter != items_.end(); ++iter){
-		std::unique_ptr<Object> thing = std::move(iter->second);
+	while( !items_.empty() ){
+		auto iter = items_.begin();
+		std::unique_ptr<Object> item = std::move(iter->second);
 		items_.erase(iter);
-		loot.push_back( std::move(thing) );
+		loot.push_back( std::move(item) );
 	}
+
+//	for (auto iter = items_.begin(); iter != items_.end(); ++iter){
+//		std::unique_ptr<Object> thing = std::move(iter->second);
+//		items_.erase(iter);
+//		loot.push_back( std::move(thing) );
+//	}
+
 	return loot;
 }
