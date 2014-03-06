@@ -18,9 +18,7 @@ Player::Player(std::string name){
 	this->inventory = std::move(inv);
 }
 
-Player::~Player() {
-	std::cout<<"Destroyed "<<this->type()<<" "<<this->name()<<std::endl;
-}
+Player::~Player(){}
 
 std::string Player::type() const{
 	return "Player";

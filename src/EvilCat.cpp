@@ -8,12 +8,12 @@
 #include "EvilCat.hpp"
 
 EvilCat::EvilCat(std::string name):
-Cat::Cat(name, 25, 1, 2){}
+Cat::Cat(name, 25, 2, 1){}
 
-EvilCat::EvilCat(std::string name,int hp , int def , int atk):
-Cat::Cat(name, hp, def, atk){}
+EvilCat::EvilCat(std::string name,int hp , int atk , int def):
+Cat::Cat(name, hp, atk, def){}
 
-EvilCat::~EvilCat() {std::cout<<"Destroyed "<<type()<<" "<<name()<<std::endl;}
+EvilCat::~EvilCat(){}
 
 std::string EvilCat::type() const{
 	return "EvilCat";

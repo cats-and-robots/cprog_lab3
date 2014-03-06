@@ -13,7 +13,7 @@ name_(name), allowed_entrance_(true), use_code_("_") {}
 Room::Room(std::string name, bool room_access, std::string use_code):
 name_(name), allowed_entrance_(room_access), use_code_(use_code) {}
 
-Room::~Room(){ std::cout<<"Destroyed Room "<<name()<<std::endl;}
+Room::~Room(){}
 
 std::string Room::name() const{
 	return name_;

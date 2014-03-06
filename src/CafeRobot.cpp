@@ -16,7 +16,7 @@ CafeRobot::CafeRobot(std::string name)
 	ATK_ = 0;
 }
 
-CafeRobot::~CafeRobot() {std::cout<<"Destroyed "<<type()<<" "<<this->name()<<std::endl;}
+CafeRobot::~CafeRobot(){}
 
 std::string CafeRobot::type() const{
 	return "CafeRobot";
@@ -27,7 +27,8 @@ int CafeRobot::attack(){
 }
 
 std::unique_ptr<Inventory> CafeRobot::talk(){
-	std::cout<<"\n*BLIP-BLOP* Todays special is soup with cat-hair *BUZZ*"<<"\n\n";
+	std::cout<<"\n*BLIP-BLOP* Todays special is soup with cat-hair *BUZZ*\n"<<
+			"If you want to check-out, say the magic sentence: \"I am home\".\n"<<std::endl;
 	if (this->inventory) return std::move(this->inventory);
 	else return nullptr;
 }

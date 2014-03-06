@@ -52,6 +52,15 @@ bool Inventory::isEmpty() const{
 		return false;
 }
 
+bool Inventory::item_exist(std::string name) const{
+	for (auto iter = items_.find(name); iter != items_.end(); ++iter){
+		if (iter->first == name){
+			return true;
+		}
+	}
+	return false;
+}
+
 std::vector<std::string> Inventory::get_items_name() const{
 	std::vector<std::string> names;
 	for (auto iter = items_.begin(); iter != items_.end(); ++iter){

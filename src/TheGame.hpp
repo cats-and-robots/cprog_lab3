@@ -53,23 +53,29 @@ private:
 	p_P Hero_;
 	p_R current_room_;
 	std::map<std::string, p_cmd > cmds_;
-	std::vector<p_R> all_rooms_;
+//	std::vector<p_R> all_rooms_;
+	std::map<std::string, p_R> all_rooms_;
 	bool continue_game_;
 
 	void load_cmds();
 	bool cmd_exist(std::string) const;
 	std::string read_string() const;
+	int read_int() const;
 	void lex_analys(const std::string&, std::string&, std::string&) const;
 	void take_command();
 	void battle();
 
 	void intro() const;
+	void credits() const;
 	void stage_1();
+	void stage_2();
+	void stage_cat_cafe();
+	void playTheGame();
 
 public:
 	TheGame(); //will create all the rooms, actors and items etc.
 	virtual ~TheGame();
-	void playTheGame();
+	void meny();
 
 };
 

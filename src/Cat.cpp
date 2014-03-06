@@ -16,17 +16,17 @@ Cat::Cat(std::string name)
 	ATK_ = 0;
 }
 
-Cat::Cat(std::string name, int hp, int def, int atk)
+Cat::Cat(std::string name, int hp, int atk, int def)
 {
 	name_ = name;
 	current_HP_ = hp;
 	max_HP_ = hp;
-	DEF_ = def;
 	ATK_ = atk;
+	DEF_ = def;
 }
 
 
-Cat::~Cat() {std::cout<<"Destroyed "<<type()<<" "<<name()<<std::endl;}
+Cat::~Cat(){}
 
 std::string Cat::type() const{
 	return "Cat";

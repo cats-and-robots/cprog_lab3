@@ -21,7 +21,7 @@ Item::Item(name,info)
 	DEF_ = def;
 }
 
-Weapon::~Weapon() {std::cout<<"Destroyed "<<type()<<" "<<name()<<std::endl;}
+Weapon::~Weapon(){}
 
 std::string Weapon::type() const{
 	return "Weapon";

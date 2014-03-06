@@ -16,7 +16,7 @@ Item::Item(name,info)
 	use_value_= health;
 }
 
-Potion::~Potion(){std::cout<<"Destroyed Potion "<<name()<<std::endl;}
+Potion::~Potion(){}
 
 int Potion::getATK() const{
 	return 0;

@@ -34,9 +34,7 @@ EvilRobot::EvilRobot(std::string name, int errors)
 
 
 
-EvilRobot::~EvilRobot(){
-	std::cout<<"Destroyed "<<this->type()<<" "<<this->name()<<std::endl;
-}
+EvilRobot::~EvilRobot(){}
 
 std::string EvilRobot::type() const{
 	return "EvilRobot";
