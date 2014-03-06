@@ -1,7 +1,0 @@
-Calculate x for the following equation:
-7 + x = 19 - x
-
-#ANSWER:6
-#ALT:-6
-#ALT:-13
-#ALT:No solution for x

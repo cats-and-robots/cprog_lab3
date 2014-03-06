@@ -1,7 +1,0 @@
-HOW TO PLAY
-
-This is a text-based adventure game. That means no fancy graphics here.
-Only text and your imagination.
-
-To play the game, you write commands that you want to perform.
-Write 'help' to see all the commands you can perfom.
