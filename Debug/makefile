@@ -8,8 +8,11 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include src/subdir.mk
--include cmd/subdir.mk
+-include src/cmd/subdir.mk
+-include src/TheGame/subdir.mk
+-include src/Room/subdir.mk
+-include src/Inventory/subdir.mk
+-include src/Characters/subdir.mk
 -include subdir.mk
 -include objects.mk
 

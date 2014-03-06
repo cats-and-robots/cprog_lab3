@@ -1,0 +1,8 @@
+If you want to move a long distance and arrive at that point with little
+position uncertainty, would you prefer to start with a low angular 
+uncertainty or low position uncertainty? 
+
+OBS! instant death if answer is incorrect.
+
+#ANSWER:Low angular uncertainty
+#ALT:Low position uncertainty

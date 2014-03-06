@@ -23,6 +23,9 @@ C_UPPER_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-src \
-cmd \
+src/cmd \
+src/TheGame \
+src/Room \
+src/Inventory \
+src/Characters \
 
