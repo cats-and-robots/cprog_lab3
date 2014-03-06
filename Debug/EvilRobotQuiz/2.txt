@@ -1,0 +1,13 @@
+Assume that the covariance matrix for estimation error of the 
+robot pose, (x, y, theta) is given by
+
+		0.04   0.01   0.02
+		0.01   0.09   0.04
+		0.02   0.04   0.16
+
+what is the standard deviation of the estimation of the y-coordinate?
+
+#ANSWER:0.3
+#ALT:0.09
+#ALT:0.14
+#ALT:0.0081
