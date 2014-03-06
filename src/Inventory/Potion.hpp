@@ -9,12 +9,9 @@
 #define POTION_HPP_
 
 #include "Item.hpp"
-//#include "Object.hpp"
 
 class Potion:public Item {
-//class Potion: public Object {
 public:
-//	Potion();
 	explicit Potion(std::string,std::string,int);
 	virtual ~Potion();
 

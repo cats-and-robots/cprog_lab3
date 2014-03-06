@@ -34,7 +34,6 @@ public:
 	void equip_LH(std::unique_ptr<Object>);
 	std::unique_ptr<Object> unequip_RH();
 	std::unique_ptr<Object> unequip_LH();
-//	std::unique_ptr<Fighter> fight(std::unique_ptr<Fighter> );
 	void fight(std::unique_ptr<Character> & );
 
 };

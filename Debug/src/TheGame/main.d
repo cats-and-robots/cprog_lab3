@@ -1,4 +1,4 @@
-src/TheGame/main.d: ../src/TheGame/main.cpp ../src/TheGame/Testing.hpp \
+src/TheGame/main.d: ../src/TheGame/main.cpp ../src/TheGame/TheGame.hpp \
  ../src/TheGame/./../Characters/Player.hpp \
  ../src/TheGame/./../Characters/Character.hpp \
  ../src/TheGame/./../Characters/./../Inventory/Inventory.hpp \
@@ -19,8 +19,7 @@ src/TheGame/main.d: ../src/TheGame/main.cpp ../src/TheGame/Testing.hpp \
  ../src/TheGame/./../Room/./../Characters/GuardianCat.hpp \
  ../src/TheGame/./../Room/./../Characters/Cat.hpp \
  ../src/TheGame/./../Room/./../Inventory/Inventory.hpp \
- ../src/TheGame/TheGame.hpp ../src/TheGame/./../cmd/cmd_help.hpp \
- ../src/TheGame/./../cmd/cmd.hpp \
+ ../src/TheGame/./../cmd/cmd_help.hpp ../src/TheGame/./../cmd/cmd.hpp \
  ../src/TheGame/./../cmd/./../Characters/Player.hpp \
  ../src/TheGame/./../cmd/./../Room/Room.hpp \
  ../src/TheGame/./../cmd/cmd_inventory.hpp \
@@ -37,7 +36,7 @@ src/TheGame/main.d: ../src/TheGame/main.cpp ../src/TheGame/Testing.hpp \
  ../src/TheGame/./../cmd/cmd_exit.hpp ../src/TheGame/./../cmd/cmd_use.hpp \
  ../src/TheGame/./../cmd/cmd_object_info.hpp
 
-../src/TheGame/Testing.hpp:
+../src/TheGame/TheGame.hpp:
 
 ../src/TheGame/./../Characters/Player.hpp:
 
@@ -78,8 +77,6 @@ src/TheGame/main.d: ../src/TheGame/main.cpp ../src/TheGame/Testing.hpp \
 ../src/TheGame/./../Room/./../Characters/Cat.hpp:
 
 ../src/TheGame/./../Room/./../Inventory/Inventory.hpp:
-
-../src/TheGame/TheGame.hpp:
 
 ../src/TheGame/./../cmd/cmd_help.hpp:
 
