@@ -53,9 +53,13 @@ private:
 	p_P Hero_;
 	p_R current_room_;
 	std::map<std::string, p_cmd > cmds_;
-//	std::vector<p_R> all_rooms_;
 	std::map<std::string, p_R> all_rooms_;
 	bool continue_game_;
+	bool special_event_1_has_happened_;
+	bool special_event_2_has_happened_;
+	bool cleared_stage_1_;
+	bool cleared_stage_2_;
+	bool played_before_;
 
 	void load_cmds();
 	bool cmd_exist(std::string) const;
@@ -64,13 +68,19 @@ private:
 	void lex_analys(const std::string&, std::string&, std::string&) const;
 	void take_command();
 	void battle();
+	void put_room(p_R);
+	p_R take_room(std::string);
 
 	void intro() const;
 	void credits() const;
+	void set_hero_name();
 	void stage_1();
 	void stage_2();
 	void stage_cat_cafe();
 	void playTheGame();
+
+	void create_new_game();
+
 
 public:
 	TheGame(); //will create all the rooms, actors and items etc.

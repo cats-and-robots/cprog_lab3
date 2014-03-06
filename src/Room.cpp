@@ -34,43 +34,56 @@ void Room::link_exit(const std::shared_ptr<Room> & exitRoom){
 
 void Room::directions() const {
 	if (neighbors_.size() > 0){
+		std::cout<<"\n";
 		if (neighbors_.size() == 1)
-			std::cout<<"You have the following door in front of you:"<<std::endl;
+			std::cout<<"You have a door in front of you with a text that says:"<<std::endl;
 		else
-			std::cout<<"You have the following doors in front of you:"<<std::endl;
+			std::cout<<"You have several doors in front of you with texts that says:"<<std::endl;
 		for (unsigned int i=0; i<neighbors_.size(); ++i){
-			std::cout<<i+1 <<": "<< neighbors_[i]->name() <<std::endl;
+			std::cout<<"   "<< neighbors_[i]->name() <<std::endl;
 		}
 	}
-	else std::cout<<"There are no doors in front of you"<<std::endl;
+
 	if (exit_.use_count() > 0){
-		std::cout<<"There is a door behind you leading back to"<<std::endl;
-		std::cout<<exit_.lock()->name()<<std::endl;
+		std::cout<<"\n";
+		std::cout<<"There is a door behind you with a text that says:"<<std::endl;
+		std::cout<<"   "<<exit_.lock()->name()<<std::endl;
 	}
-	else std::cout<<"There is no door behind you"<<std::endl;
+
+	if (neighbors_.size() <= 0 && exit_.use_count() <= 0){
+		std::cout<<"\n";
+		std::cout<<"The door behind you have vanished!\nYou are stuck inside this room!"<<std::endl;
+	}
 }
 
 void Room::description() const{
 	std::cout<<"Inside "<< this->name()<<" can the following things be seen..." <<std::endl;
 
-	std::cout<<"\n";
-	this->show_inventory();
-	std::cout<<"\n";
-	int counter;
-	if (actors_.size()>0){
-		if (actors_.size() == 1)
-			std::cout<<"One creature:"<<std::endl;
+
+	//if there are items inside the room, show them
+	if (! this->isEmpty()){
+		std::cout<<"\n";
+		if(this->items_.size()==1)
+			std::cout<<"One object:"<<std::endl;
 		else
-			std::cout<<"Several creatures:"<<std::endl;
-		counter = 1;
+			std::cout<<"Several objects:"<<std::endl;
+		this->show_inventory();
+	}
+
+	if (actors_.size()>0){
+		std::cout<<"\n";
+		if (actors_.size() == 1)
+			std::cout<<"One character:"<<std::endl;
+		else
+			std::cout<<"Several characters:"<<std::endl;
 		for (auto iter = actors_.begin(); iter != actors_.end(); ++iter){
-			std::cout<< counter++ <<": "<<iter->first<<std::endl;
+			std::cout<<"   <"<< iter->second->type()<<"> "<<iter->first<<std::endl;
 		}
 	}
-	else
-		std::cout<<"There are no creatures..."<<std::endl;
-	std::cout<<"\n";
-	std::cout<<"--------------------------------------------"<<std::endl;
+	if (this->isEmpty() && actors_.size() == 0) {
+		std::cout<<"\n";
+		std::cout<<"   Nothing..."<<std::endl;
+	}
 }
 
 std::string Room::get_use_code() const{
@@ -176,4 +189,14 @@ std::vector< std::unique_ptr<Fighter> > Room::leave_all_evil(){
 		actors.push_back(this->leave(*iter_name));
 	}
 	return actors;
+}
+
+bool Room::no_enemies() const{
+	int nr_found = 0;
+	for (auto iter = actors_.begin(); iter != actors_.end(); ++iter){
+		if (iter->second->type() == "EvilCat" || iter->second->type() == "EvilRobot")
+			++nr_found;
+	}
+	if (nr_found == 0) return true;
+	else return false;
 }

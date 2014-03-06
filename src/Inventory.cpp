@@ -34,15 +34,13 @@ std::unique_ptr<Object> Inventory::take(std::string name){
 }
 
 void Inventory::show_inventory() const{
-	int counter = 1;
-	std::cout<<"Inventory:"<<std::endl;
 	if (!this->isEmpty() ){
 		for (auto iter = items_.begin(); iter != items_.end(); ++iter){
-			std::cout<< counter++ <<": <"<< iter->second->type()<< "> " <<iter->first<<std::endl;
+			std::cout<<"   <"<< iter->second->type()<< "> " <<iter->first<<std::endl;
 		}
 	}
 	else
-		std::cout<<"Empty"<<std::endl;
+		std::cout<<"   Empty"<<std::endl;
 }
 
 bool Inventory::isEmpty() const{
@@ -87,12 +85,6 @@ std::vector< std::unique_ptr<Object> >  Inventory::loot(){
 		items_.erase(iter);
 		loot.push_back( std::move(item) );
 	}
-
-//	for (auto iter = items_.begin(); iter != items_.end(); ++iter){
-//		std::unique_ptr<Object> thing = std::move(iter->second);
-//		items_.erase(iter);
-//		loot.push_back( std::move(thing) );
-//	}
 
 	return loot;
 }

@@ -25,7 +25,7 @@ std::pair< p_P, p_R > equip_righthand::execute(p_P P, p_R R, std::string com = "
 		if (nr_of_weapons > 1){
 			std::cout<<"Weapons in your inventory to choose from:"<<std::endl;
 			for (int i = 0; i< nr_of_weapons; ++i){
-				std::cout<<i+1<<": "<<weapon_list[i]<<std::endl;
+				std::cout<<"   "<<i+1<<": "<<weapon_list[i]<<std::endl;
 			}
 			while (true){
 				std::cout << "Please enter a number between 1 and "<<nr_of_weapons<<std::endl;
@@ -37,7 +37,7 @@ std::pair< p_P, p_R > equip_righthand::execute(p_P P, p_R R, std::string com = "
 		}
 		//equip new weapon
 		p_O new_weapon = P->inventory->take(weapon_list[answer-1]);
-		std::cout<<"Equipped "<<new_weapon->name()<<" to "<<P->name()<<"'s right hand."<<std::endl;
+		std::cout<<"Equipped <"<<new_weapon->type()<<"> "<<new_weapon->name()<<" to "<<P->name()<<"'s right hand."<<std::endl;
 		P->equip_RH(std::move(new_weapon));
 	}
 	else

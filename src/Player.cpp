@@ -31,10 +31,9 @@ std::string Player::baseType() const{
 int Player::attack() {
 	std::srand(time(NULL)); //generare different randomizations
 	std::cout<<"Hit enter to roll the dice! ";
-	char tmp;
-	tmp = std::cin.get();
+	std::cin.ignore();
 	int dice_toss = 1 + rand() % 6; //1 to 6
-	std::cout<<"The dice shows "<<dice_toss<<" points!"<<std::endl;
+	std::cout<<"\nThe dice shows "<<dice_toss<<" points!"<<std::endl;
 	int power = ATK_ + dice_toss;
 	if (RH_) power+= RH_->getATK();
 	if (LH_) power+= LH_->getATK();
@@ -80,7 +79,6 @@ std::unique_ptr<Object> Player::unequip_LH(){
 
 //std::unique_ptr<Fighter> Player::fight(std::unique_ptr<Fighter> actor){
 void Player::fight(std::unique_ptr<Fighter>& actor){
-	std::cout<<this->name()<<" will now fight against "<<actor->type()<<" "<<actor->name()<<"!"<<std::endl;
 	if (actor->type() == "EvilRobot"){
 		int quiz_result = actor->attack();
 		/* For different values from calling attack()
@@ -101,6 +99,9 @@ void Player::fight(std::unique_ptr<Fighter>& actor){
 			std::cout<<actor->name() <<" inflicted " << this->name() <<" with "<< max_HP_ <<" damage-points!"<<std::endl;
 			this->takeDamage(max_HP_);
 		}
+		std::cout<<"Current HP: "<<this->current_HP()<<"/"<<this->max_HP_<<std::endl;
+		std::cout<<"Hit enter to continue";
+		std::cin.ignore();
 	}
 	//For all other creatures that you will fight
 	else{
@@ -108,7 +109,7 @@ void Player::fight(std::unique_ptr<Fighter>& actor){
 		int random_start = rand() % 2; //0 or 1
 		int damage;
 		if (random_start == 1){
-			std::cout<< this->name() <<" attacks first!" <<std::endl;
+			std::cout<< this->name() <<" attacks "<< actor->name() <<" first!" <<std::endl;
 			damage = this->attack();
 			actor->takeDamage(damage);
 			std::cout<< this->name() <<" inflicted "<< actor->name() <<
@@ -133,8 +134,9 @@ void Player::fight(std::unique_ptr<Fighter>& actor){
 						" with "<< damage << " damage-points!" <<std::endl;
 			}
 		}
+		std::cout<<"\nCurrent HP: "<<this->current_HP()<<"/"<<this->max_HP_<<"\n"<<std::endl;
 	}
 
-//	return std::move(actor);
+
 }
 

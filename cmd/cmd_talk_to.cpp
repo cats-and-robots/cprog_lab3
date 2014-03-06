@@ -18,9 +18,9 @@ std::pair< p_P, p_R > talk_to::execute(p_P P, p_R R, std::string com){
 		if (invent){
 			std::vector<p_O> items = invent->loot();
 			if (items.size()>0){
-				std::cout<<"Received the following stuff from "<<actor->name()<<":"<<std::endl;
+				std::cout<<"Received the following stuff from <"<<actor->type()<<"> "<<actor->name()<<":"<<std::endl;
 				for (unsigned int i = 0; i<items.size(); ++i){
-					std::cout<<"<"<<items[i]->type()<<"> "<<items[i]->name()<<std::endl;
+					std::cout<<"   <"<<items[i]->type()<<"> "<<items[i]->name()<<std::endl;
 				}
 				P->inventory->put_all( items );
 			}

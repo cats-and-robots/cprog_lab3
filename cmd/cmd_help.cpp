@@ -27,13 +27,13 @@ std::pair< p_P, p_R > help::execute(p_P P, p_R R, std::string com = ""){
 	std::cout<<std::left << std::setfill('.') <<std::setw(align) <<
 			"   unequip lefthand"<<"remove weapon from your left hand."<<std::endl;
 	std::cout<<std::left << std::setfill('.') <<std::setw(align) <<
-			"   look around"<<"get information of all the things in the current area."<<std::endl;
+			"   look around"<<"get information of all the things in the area."<<std::endl;
 	std::cout<<std::left << std::setfill('.') <<std::setw(align) <<
-			"   directions"<<"get information of which areas you can reach from here."<<std::endl;
+			"   directions"<<"get information of which areas you can reach."<<std::endl;
 	std::cout<<std::left << std::setfill('.') <<std::setw(align) <<
 			"   take <object>"<<"put object to your inventory, ex \"take Book\"."<<std::endl;
 	std::cout<<std::left << std::setfill('.') <<std::setw(align) <<
-			"   talk to <character>"<<"talk to someone in the area, ex \"talk to Alex\"."<<std::endl;
+			"   talk to <character>"<<"talk to someone in the area, ex \"talk to Bob\"."<<std::endl;
 	std::cout<<std::left << std::setfill('.') <<std::setw(align) <<
 			"   go to <room>"<<"switch area, ex \"go to Main hall\"."<<std::endl;
 	std::cout<<std::left << std::setfill('.') <<std::setw(align) <<

@@ -7,8 +7,8 @@
 
 #include "Potion.hpp"
 
-Potion::Potion():
-Item::Item(){}
+//Potion::Potion():
+//Item::Item(){}
 
 Potion::Potion(std::string name, std::string info, int health):
 Item::Item(name,info)

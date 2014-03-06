@@ -54,6 +54,7 @@ public:
 	std::vector< std::unique_ptr<Fighter> > leave_all();
 	std::vector< std::unique_ptr<Fighter> > leave_all_evil();
 
+	bool no_enemies() const;
 };
 
 

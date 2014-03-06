@@ -14,7 +14,7 @@ go_to::~go_to(){}
 std::pair< p_P, p_R > go_to::execute(p_P P, p_R R, std::string com){
 
 	if (R->name() == com){
-		std::cout<<"You are already in area "<<com<<std::endl;
+		std::cout<<"You are already in area "<<com<<"!"<<std::endl;
 		return std::make_pair( std::move(P), std::move(R) );
 	}
 	p_R new_room = R->neighbor(com);
@@ -24,8 +24,8 @@ std::pair< p_P, p_R > go_to::execute(p_P P, p_R R, std::string com){
 			R = new_room;
 		}
 		else{
-			std::cout<<"The door is looked to "<<new_room->name()<<"!"<<std::endl;
-			//Do I need to put the room back?
+			std::cout<<"The door to "<<new_room->name()<<" is looked!"<<std::endl;
+
 		}
 	}
 	else

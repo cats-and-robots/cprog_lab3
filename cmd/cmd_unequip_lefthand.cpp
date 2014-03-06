@@ -17,7 +17,7 @@ std::pair< p_P, p_R > unequip_lefthand::execute(p_P P, p_R R, std::string com = 
 		return std::make_pair( std::move(P), std::move(R) );
 	}
 	p_O old_weapon = P->unequip_LH();
-	std::cout<<"Put "<<old_weapon->name()<<" back into the inventory."<<std::endl;
+	std::cout<<"Put <"<< old_weapon->type() <<"> "<<old_weapon->name()<<" back into inventory."<<std::endl;
 	P->inventory->put(std::move(old_weapon));
 	return std::make_pair( std::move(P), std::move(R) );
 

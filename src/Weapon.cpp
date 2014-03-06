@@ -7,12 +7,12 @@
 
 #include "Weapon.hpp"
 
-Weapon::Weapon():
-Item::Item()
-{
-	ATK_ = 0;
-	DEF_ = 0;
-}
+//Weapon::Weapon():
+//Item::Item()
+//{
+//	ATK_ = 0;
+//	DEF_ = 0;
+//}
 
 Weapon::Weapon(std::string name,std::string info,int atk,int def):
 Item::Item(name,info)

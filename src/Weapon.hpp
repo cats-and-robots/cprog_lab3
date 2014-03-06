@@ -17,7 +17,7 @@ private:
 	int ATK_;
 	int DEF_;
 public:
-	Weapon();
+//	Weapon();
 	explicit Weapon(std::string,std::string,int,int);
 	virtual ~Weapon();
 

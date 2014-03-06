@@ -28,7 +28,7 @@ int CafeRobot::attack(){
 
 std::unique_ptr<Inventory> CafeRobot::talk(){
 	std::cout<<"\n*BLIP-BLOP* Todays special is soup with cat-hair *BUZZ*\n"<<
-			"If you want to check-out, say the magic sentence: \"I am home\".\n"<<std::endl;
+			"When you feel you are at peace, say the magic words: \"I am home\".\n"<<std::endl;
 	if (this->inventory) return std::move(this->inventory);
 	else return nullptr;
 }

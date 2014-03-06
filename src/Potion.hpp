@@ -14,7 +14,7 @@
 class Potion:public Item {
 //class Potion: public Object {
 public:
-	Potion();
+//	Potion();
 	explicit Potion(std::string,std::string,int);
 	virtual ~Potion();
 

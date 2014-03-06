@@ -7,13 +7,13 @@
 
 #include "Item.hpp"
 
-Item::Item()
-{
-	name_="";
-	info_="";
-	use_code_ = "";
-	use_value_= 0;
-}
+//Item::Item()
+//{
+//	name_="";
+//	info_="";
+//	use_code_ = "";
+//	use_value_= 0;
+//}
 
 Item::Item(std::string name, std::string info)
 {

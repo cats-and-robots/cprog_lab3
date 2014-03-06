@@ -8,6 +8,35 @@
 #include "TheGame.hpp"
 
 TheGame::TheGame(){
+	played_before_ = false;
+
+	//constructor gives warnings if we don't assign the attributes
+	continue_game_ = true;
+	special_event_1_has_happened_ = false;
+	special_event_2_has_happened_ = false;
+	cleared_stage_1_ = false;
+	cleared_stage_2_ = false;
+
+
+}
+
+TheGame::~TheGame(){}
+
+void TheGame::create_new_game(){
+
+	//clear all smart pointers and maps (in case we re-play the game)
+	Hero_.reset();
+	current_room_.reset();
+	cmds_.clear();
+	all_rooms_.clear();
+
+	//set the different passed stages and special events
+	continue_game_ = true;
+	special_event_1_has_happened_ = false;
+	special_event_2_has_happened_ = false;
+	cleared_stage_1_ = false;
+	cleared_stage_2_ = false;
+
 	//load commands into map cmds_
 	load_cmds();
 
@@ -22,12 +51,10 @@ TheGame::TheGame(){
 	p_O small_potion(new Potion("Small Potion", "Restores a small amount of your health", 30));
 	p_O expired_milk(new Potion("Expired Milk", "Says that it expired 2012...eeuuhh", -30));
 
-
-
 	//Create rooms
 	p_R entrance(new Room("Entrance"));
 	p_R mansion(new Room("Mansion", false, key_to_mansion->use_code() ));
-	p_R cat_cafe(new Room("Cat Café", false, key_to_cat_cafe->use_code() ));
+	p_R cat_cafe(new Room("Cat Cafe", false, key_to_cat_cafe->use_code() ));
 	p_R second_floor(new Room("Second floor"));
 	p_R bathroom(new Room("Bathroom", false, key_to_bathroom->use_code() ));
 
@@ -78,22 +105,19 @@ TheGame::TheGame(){
 	current_room_ = entrance;
 
 	//save all the room pointers in a map, or else the rooms will be destroyed when we switch room!
-	all_rooms_.insert (std::pair< std::string, p_R >
-		(entrance->name(),std::move(entrance)) );
-	all_rooms_.insert (std::pair< std::string, p_R >
-		(mansion->name(),std::move(mansion)) );
-	all_rooms_.insert (std::pair< std::string, p_R >
-		(cat_cafe->name(),std::move(cat_cafe)) );
-	all_rooms_.insert (std::pair< std::string, p_R >
-		(second_floor->name(),std::move(second_floor)) );
-	all_rooms_.insert (std::pair< std::string, p_R >
-		(bathroom->name(),std::move(bathroom)) );
+	this->put_room(std::move(entrance));
+	this->put_room(std::move(mansion));
+	this->put_room(std::move(cat_cafe));
+	this->put_room(std::move(second_floor));
+	this->put_room(std::move(bathroom));
 
+	//Set the Hero's name
+	set_hero_name();
 
-
+	//Show the intro-text
+	intro();
 }
 
-TheGame::~TheGame(){}
 
 void TheGame::load_cmds(){
 	p_cmd cmd_help(new help);
@@ -222,7 +246,8 @@ void TheGame::take_command(){
 		continue_game_=false;
 		return;
 	}
-	if (input == "I am home" && current_room_->name()== "Cat Café") {
+	//Write "I am home" in the Cat Cafe to finish the game
+	if (input == "I am home" && current_room_->name()== "Cat Cafe") {
 		continue_game_=false;
 		return;
 	}
@@ -246,7 +271,7 @@ void TheGame::battle(){
 	std::cout<<"\n\nTime for a battle!"<<std::endl;
 	std::cout<<"You are up against: "<<std::endl;
 	for (unsigned int i = 0; i<enemies.size(); ++i){
-		std::cout<<i+1<<": "<<enemies[i]->type()<<" "<<enemies[i]->name()<<std::endl;
+		std::cout<<"   <"<<enemies[i]->type()<<"> "<<enemies[i]->name()<<std::endl;
 	}
 	std::srand(time(NULL)); //generate different randomizations
 	bool done_fighting  = false;
@@ -257,20 +282,24 @@ void TheGame::battle(){
 		for (auto iter = enemies.begin(); iter != enemies.end(); ++iter){
 			Hero_->fight( *iter ); //one round
 			if (Hero_->isDead()){
-				done_fighting = true;
-				break; //we are dead, don't fight anymore
+				done_fighting = true; //end the battle
+				break; //we are dead, don't fight anymore enemies
 			}
 			if ( (*iter)->isDead() ){
-				std::cout<< (*iter)->type() <<" "<< (*iter)->name() <<" fainted!"<<std::endl;
+				std::cout<<"\n<"<< (*iter)->type() <<"> "<< (*iter)->name() <<" fainted!"<<std::endl;
+				std::cout<<"Hit enter to continue";
+				std::cin.ignore();
 				//loot the enemy if possible
 				if ( (*iter)->inventory ){
 					std::vector< p_O > loot = (*iter)->inventory->loot();
 					if (loot.size()>0){
-						std::cout<< (*iter)->type() <<" "<< (*iter)->name() <<" dropped the following stuff:"<<std::endl;
+						std::cout<<"\n<"<< (*iter)->type() <<"> "<< (*iter)->name() <<" dropped the following stuff:"<<std::endl;
 						for (unsigned int i = 0; i<loot.size(); ++i){
-							std::cout<<i+1<<": <"<<loot[i]->type()<<"> "<<loot[i]->name()<<std::endl;
+							std::cout<<"   <"<<loot[i]->type()<<"> "<<loot[i]->name()<<std::endl;
 						}
 						Hero_->inventory->put_all(loot);
+						std::cout<<"Hit enter to continue";
+						std::cin.ignore();
 					}
 				}
 			}
@@ -279,17 +308,45 @@ void TheGame::battle(){
 		enemies.erase( std::remove_if(std::begin(enemies), std::end(enemies),
 				[](p_F const & enemy) -> bool {return enemy->isDead(); }), std::end(enemies) );
 
+		//when we have defeated all enemies, the battle is over
 		if (enemies.empty()) done_fighting = true;
 	}
 	if ( Hero_->isDead() ){
-		std::cout<<"You died in battle!"<<std::endl;
+		//if we died, fully restore all remaining enemies
+		for (auto iter = enemies.begin(); iter != enemies.end(); ++iter){
+			(*iter)->full_restore();
+		}
+		//put the enemies back in the current room
+		current_room_->enter_all(enemies);
+
+		std::cout<<"\nYou died in battle!"<<std::endl;
+		std::cout<<"Hit enter to continue";
+		std::cin.ignore();
 	}
 	else{
-		std::cout<<"All enemies are defeated!"<<std::endl;
+		std::cout<<"\nAll enemies are defeated!"<<std::endl;
+		std::cout<<"Hit enter to continue";
+		std::cin.ignore();
 	}
+}
+void TheGame::put_room(p_R room){
+	all_rooms_.insert (std::pair< std::string, std::shared_ptr<Room> >
+		(room->name(),std::move(room)) );
+}
+
+p_R TheGame::take_room(std::string name){
+	for (auto iter = all_rooms_.find(name); iter != all_rooms_.end(); ++iter){
+		if (iter->first == name){
+			p_R room = std::move(iter->second);
+			all_rooms_.erase(iter);
+			return std::move(room);
+		}
+	}
+	return nullptr;
 }
 
 void TheGame::intro() const{
+	std::cout<<"\n\n";
 	std::vector<std::string> text_files_name;
 	text_files_name.push_back("TheGame_textfiles/bg_story.txt");
 	text_files_name.push_back("TheGame_textfiles/how_to_play.txt");
@@ -305,12 +362,13 @@ void TheGame::intro() const{
 		else
 			std::cout << "Unable to open file ./" << text_files_name[i] <<std::endl;
 
-		std::cout<<std::endl<<std::endl;
+		std::cout<<"\n\n";
 	}
 }
 
 void TheGame::credits() const{
 
+	std::cout<<"\n\n";
 	std::string text_file_name = "TheGame_textfiles/credits.txt";
 	std::string line;
 
@@ -324,12 +382,19 @@ void TheGame::credits() const{
 	else
 		std::cout << "Unable to open file ./" << text_file_name <<std::endl;
 
-	std::cout<<std::endl<<std::endl;
+	std::cout<<"\n\n";
+	std::cout<<"Hit enter to go back to the menu";
+	std::cin.ignore();
+}
+
+void TheGame::set_hero_name(){
+	std::cout<<"Please enter the name of our Hero!"<<std::endl;
+	std::string name = this->read_string();
+	Hero_->change_name(name);
 }
 
 void TheGame::stage_1(){
 	continue_game_ = true;
-	bool special_event_has_happen = false;
 	while (continue_game_){
 		bool special_event = false;
 		Hero_->do_battle = false;
@@ -337,28 +402,33 @@ void TheGame::stage_1(){
 		//talking to an Evil actor changes do_battle to true
 		if(Hero_->do_battle){
 			battle();
-			//if you defeat the EvilCat in the mansion
-			special_event = true;
 		}
 		if (Hero_->isDead()){
 			continue_game_ = false;
 			continue;
 		}
+		if (current_room_->name() == "Mansion" && current_room_->no_enemies()){
+			//if you defeat the EvilCat in the mansion
+			special_event = true;
+		}
 		//special state, allow access to second floor
-		if (special_event && !special_event_has_happen ){
-			p_R mansion = std::move(all_rooms_.find("Mansion")->second);
-			p_R second_floor = std::move(all_rooms_.find("Second floor")->second);
+		if (special_event && !special_event_1_has_happened_ ){
+
+			special_event_1_has_happened_ = true;
+
+			p_R mansion = this->take_room("Mansion");
+			if (!mansion) std::cout<<"Could not get Mansion!"<<std::endl;
+
+			p_R second_floor = this->take_room("Second floor");
+			if (!second_floor) std::cout<<"Could not get Second floor!"<<std::endl;
 			mansion->link(second_floor);
 			//put back the rooms
-			all_rooms_.insert (std::pair< std::string, p_R >
-				(mansion->name(),std::move(mansion)) );
-			all_rooms_.insert (std::pair< std::string, p_R >
-				(second_floor->name(),std::move(second_floor)) );
+			this->put_room(std::move(mansion));
+			this->put_room(std::move(second_floor));
 
-			std::cout<<"When the EvilCat fainted, a hidden stair appear!\n"
+			std::cout<<"\nWhen the EvilCat fainted, a hidden stair appeared!\n"
 					<<"You have now access to the second floor of the mansion!" <<std::endl;
-			special_event = false;
-			special_event_has_happen = true;
+
 		}
 		//Stage 1 completed!
 		if (current_room_->name() == "Second floor"){
@@ -370,7 +440,6 @@ void TheGame::stage_1(){
 
 void TheGame::stage_2(){
 	continue_game_ = true;
-	bool special_event_has_happen = false;
 	while (continue_game_){
 		bool special_event = false;
 
@@ -378,43 +447,40 @@ void TheGame::stage_2(){
 		this->take_command();
 		//talking to an Evil actor changes do_battle to true
 		if(Hero_->do_battle){
-			std::cout<<"Will soon battle!"<<std::endl;
 			battle();
-			std::cout<<"have battled!"<<std::endl;
 		}
 		if (Hero_->isDead()){
 			continue_game_ = false;
 			continue;
 		}
-
-		if (Hero_->inventory->item_exist("Cat Key")){
-			std::cout<<"I have the Cat Key! "<<std::endl;
+		if (current_room_->name() == "Bathroom" && current_room_->no_enemies()){
+			//if you defeated the EvilCat and EvilRobot in the bathroom
 			special_event = true;
 		}
 
-		//special state, allow access to the Cat Café
-		if (special_event && !special_event_has_happen){
-			std::cout<<"Inside special event!"<<std::endl;
-			p_R mansion = std::move(all_rooms_.find("Mansion")->second);
-			std::cout<<"A"<<std::endl;
-			p_R cat_cafe = std::move(all_rooms_.find("Cat Café")->second);
-			std::cout<<"B"<<std::endl;
-			//cat café is an absorbing state
-			mansion->link(cat_cafe);
-			std::cout<<"C"<<std::endl;
-			//put back the rooms
-			all_rooms_.insert (std::pair< std::string, p_R >
-				(mansion->name(),std::move(mansion)) );
-			std::cout<<"D"<<std::endl;
-			all_rooms_.insert (std::pair< std::string, p_R >
-				(cat_cafe->name(),std::move(cat_cafe)) );
+		//special state, allow access to the Cat Cafe
+		if (special_event && !special_event_2_has_happened_){
 
-			std::cout<<"You heard a strange sound echoing inside the mansion!\n"
+			special_event_2_has_happened_ = true;
+
+			p_R mansion = this->take_room("Mansion");
+			if (!mansion) std::cout<<"Could not get Mansion!"<<std::endl;
+
+			p_R cat_cafe = this->take_room("Cat Cafe");
+			if (!cat_cafe) std::cout<<"Could not get Cat Cafe!"<<std::endl;
+
+			//Cat Cafe is an absorbing state
+			mansion->link(cat_cafe);
+
+			//put back the rooms
+			this->put_room(std::move(mansion));
+			this->put_room(std::move(cat_cafe));
+
+			std::cout<<"\nYou heard a strange sound echoing inside the mansion!\n"
 					<<"Could it perhaps be connected with this key we just got?" <<std::endl;
-			special_event_has_happen = true;
 		}
 		//Stage 2 completed!
-		if (current_room_->name() == "Cat Café"){
+		if (current_room_->name() == "Cat Cafe"){
 			return; //go back to playTheGame()
 		}
 	}
@@ -429,50 +495,80 @@ void TheGame::stage_cat_cafe(){
 	}
 }
 
+void TheGame::playTheGame(){
+	if (!cleared_stage_1_){
+		stage_1();
+		if (Hero_->isDead()){
+			std::cout<<"\n\nGAME OVER!"<<std::endl;
+			std::cout<<"Hit enter to go back to main menu";
+			std::cin.ignore();
+			std::cout<<"\n\n\n"<<std::endl;
+			return;
+		}
+		cleared_stage_1_ = true;
+	}
+	if (!cleared_stage_2_){
+		stage_2();
+		if (Hero_->isDead()){
+			std::cout<<"\n\nGAME OVER!"<<std::endl;
+			std::cout<<"Hit enter to go back to main menu";
+			std::cin.ignore();
+			std::cout<<"\n\n\n"<<std::endl;
+			return;
+		}
+		cleared_stage_2_ = true;
+	}
+	stage_cat_cafe();
+	credits();
+}
+//////////////////////////////////////////////////////////////////////
+
 void TheGame::meny(){
 	bool continue_to_play = true;
 	while (continue_to_play){
 		std::cout<<"MAIN MENU\n\n\n"<<
 				"Welcome to TheGame!\n"<<
 				"Here are your options:\n"
-				"1: Play TheGame\n"
+				"1: Start a new game\n"<<
+				"2: Continue\n"<<
 				"0: Quit"<<std::endl;
 		int int_answer = 0;
 		bool is_incorrect = true;
 		while (is_incorrect) {
-			std::cout << "Please enter 1 or 0..."<<std::endl;
+			std::cout << "Please enter 1, 2 or 0..."<<std::endl;
 			int_answer = this->read_int();
-			if (int_answer >= 0 && int_answer <=1){
+
+			if (int_answer<0 || int_answer >2){
+				std::cout<<"Not a number between 0 and 2!"<<std::endl;
+				continue;
+			}
+			if (int_answer == 2 && played_before_ == false){
+				std::cout<<"You have not played the game before so you cannot choose to continue!"<<std::endl;
+				continue;
+			}
+			else{
 				is_incorrect = false;
 				continue;
 			}
-			std::cout<<"Not a number between 1 and 0!"<<std::endl;
+
 		}
 		if (int_answer == 0){
 			std::cout<<"Good bye!"<<std::endl;
 			continue_to_play = false;
 			continue;
 		}
-		if (int_answer == 1){
+		else if (int_answer == 1){
+			this->create_new_game();
+			this->playTheGame();
+			played_before_ = true;
+		}
+		else if (int_answer == 2){
+			Hero_->full_restore();
+			std::cout<<"\nRespawn in the same room your currently were in!\n"<<
+					"Defeated enemies will not respawn!\n"<<std::endl;
 			this->playTheGame();
 		}
 	}
 
 
-}
-//////////////////////////////////////////////////////////////////////
-void TheGame::playTheGame(){
-	intro();
-	stage_1();
-	if (Hero_->isDead()){
-		std::cout<<"\n\nGAME OVER!\n\n"<<std::endl;
-		return;
-	}
-	stage_2();
-	if (Hero_->isDead()){
-		std::cout<<"\n\nGAME OVER!\n\n"<<std::endl;
-		return;
-	}
-	stage_cat_cafe();
-	credits();
 }

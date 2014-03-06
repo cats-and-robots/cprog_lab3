@@ -18,7 +18,7 @@ std::pair< p_P, p_R > exit_room::execute(p_P P, p_R R, std::string com){
 		R = new_room;
 	}
 	else
-		std::cout<<"You are not allowed to do that!"<<std::endl;
+		std::cout<<"There is no exit from this area!"<<std::endl;
 	return std::make_pair( std::move(P), std::move(R) );
 
 }

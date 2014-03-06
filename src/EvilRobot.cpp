@@ -44,8 +44,8 @@ std::string EvilRobot::type() const{
 int EvilRobot::attack(){
 	std::cout<<this->type()<<" "<<this->name()<<" is now going to ask you a robot quiz!"<<std::endl;
 	std::cout<<"Hit enter to see the quiz!";
-	char tmp;
-	tmp = std::cin.get();
+	std::cin.ignore();
+	std::cout<<"\n\nQUIZ\n";
 	//Show the question
 	std::cout<<quizzes_[current_Quiz_index_]->question_<<std::endl;
 	//show the alternatives
@@ -66,11 +66,11 @@ int EvilRobot::attack(){
 	int return_value;
 	std::string str_answer = quizzes_[current_Quiz_index_]->options_[int_answer-1];
 	if (quizzes_[current_Quiz_index_]->answer_.compare(str_answer) == 0 ){
-		std::cout<<"Correct!"<<std::endl;
+		std::cout<<"\nCorrect!"<<std::endl;
 		return_value = 0;
 	}
 	else{
-		std::cout<<"Incorrect!"<<std::endl;
+		std::cout<<"\nIncorrect!"<<std::endl;
 		if (quizzes_[current_Quiz_index_]->options_.size() == 2) //instant death!
 			return_value = -1;
 		else //lose half of current health points
@@ -87,12 +87,22 @@ int EvilRobot::attack(){
 }
 
 std::unique_ptr<Inventory> EvilRobot::talk(){
-	std::cout<<"\n*BLIP-BLOP* Solve my quizzes!!! *BUZZ*"<<"\n\n";
+	std::cout<<"\n*BLIP-BLOP* Solve my quizzes!!! *BUZZ*"<<"\n"<<std::endl;
 	return nullptr;
 }
 
 void EvilRobot::stats() const{
 	std::cout<<"Name: " << name() << "\nType: "<< type() <<"\nHP: "<< current_HP() <<"/"<< max_HP_<<std::endl;
+}
+
+void EvilRobot::full_restore(){
+	current_HP_ = max_HP_;
+	current_Quiz_index_ = 0;
+	if (quizzes_.size()>0){
+		std::srand(time(NULL)); //generate different randomizations
+		std::random_shuffle( quizzes_.begin(), quizzes_.end() ); //shuffle
+	}
+
 }
 
 int EvilRobot::read_int() const{

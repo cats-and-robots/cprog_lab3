@@ -22,16 +22,15 @@ std::string EvilCat::type() const{
 int EvilCat::attack(){
 	std::srand(time(NULL)); //generare different randomizations
 	std::cout<<"Hit enter to let "<<this->name()<<" roll the dice! ";
-	char tmp;
-	tmp = std::cin.get();
+	std::cin.ignore();
 	int dice_toss = 1 + rand() % 6; //1 to 6
-	std::cout<<"The dice shows "<<dice_toss<<" points!"<<std::endl;
+	std::cout<<"\nThe dice shows "<<dice_toss<<" points!"<<std::endl;
 	int power = ATK_+dice_toss;
 	return power;
 }
 
 std::unique_ptr<Inventory> EvilCat::talk(){
-	std::cout<<"\nkekekekek! *_*"<<"\n\n";
+	std::cout<<"\nkekekekek! *_*"<<"\n"<<std::endl;
 	return nullptr;
 }
 

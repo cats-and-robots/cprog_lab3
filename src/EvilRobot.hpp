@@ -43,6 +43,7 @@ public:
 	virtual int attack();
 	virtual std::unique_ptr<Inventory> talk();
 	virtual void stats() const;
+	virtual void full_restore();
 
 };
 

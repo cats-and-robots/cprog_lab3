@@ -14,7 +14,7 @@ take::~take(){}
 std::pair< p_P, p_R > take::execute(p_P P, p_R R, std::string com){
 	p_O item = R->take(com);
 	if (item){
-		std::cout<<"Put "<<item->name()<<" to inventory."<<std::endl;
+		std::cout<<"Put <"<<item->type()<<"> "<<item->name()<<" to inventory."<<std::endl;
 		P->inventory->put(std::move(item));
 	}
 	else
