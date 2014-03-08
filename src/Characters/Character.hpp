@@ -24,6 +24,9 @@ public:
 	virtual std::string type() const = 0;
 	virtual std::string baseType() const = 0;
 	virtual int attack() =0;
+	virtual int get_attack_stat() const{return ATK_;}
+	virtual int get_defense_stat() const{return DEF_;}
+	virtual int defense() const{return DEF_;}
 	virtual std::unique_ptr<Inventory> talk() = 0;
 	virtual void stats() const = 0;
 	virtual bool use(std::string){return false;}

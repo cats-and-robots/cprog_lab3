@@ -27,9 +27,11 @@ void TheGame::create_new_game(){
 	//clear all smart pointers and maps (in case we re-play the game)
 	Hero_.reset();
 	current_room_.reset();
-	cmds_.clear();
 	all_rooms_.clear();
-
+	//if we have not loaded the commands, do it
+	if (cmds_.empty()){
+		load_cmds();
+	}
 	//set the different passed stages and special events
 	continue_game_ = true;
 	special_event_1_has_happened_ = false;
@@ -37,8 +39,7 @@ void TheGame::create_new_game(){
 	cleared_stage_1_ = false;
 	cleared_stage_2_ = false;
 
-	//load commands into map cmds_
-	load_cmds();
+
 
 	//create items and weapons
 	p_O google_glass(new Item("Google Glass", "Device to help you translate japanese to english", "google glass"));
@@ -47,7 +48,7 @@ void TheGame::create_new_game(){
 	p_O key_to_cat_cafe(new Item("Cat Key", "Key that is shaped like a cat", "cat key"));
 	p_O small_knife(new Weapon("Small Knife", "A small kitchen knife", 2,0));
 	p_O heavy_axe(new Weapon("Heavy Axe", "A big powerful axe", 15,0));
-	p_O iron_shield(new Weapon("Iron Shield", "Good shield for defending yourself against animal claws", 0,15));
+	p_O iron_shield(new Weapon("Iron Shield", "Good shield for defending yourself against animal claws", 0,2));
 	p_O small_potion(new Potion("Small Potion", "Restores a small amount of your health", 30));
 	p_O expired_milk(new Potion("Expired Milk", "Says that it expired 2012...eeuuhh", -30));
 
@@ -60,6 +61,7 @@ void TheGame::create_new_game(){
 
 
 	//Create player and actors
+
 	p_P tmp(new Player("Hero"));
 	Hero_ = std::move(tmp);
 	p_C guardian_cat(new GuardianCat("Siamese", google_glass->use_code()));
@@ -426,7 +428,7 @@ void TheGame::stage_1(){
 			this->put_room(std::move(mansion));
 			this->put_room(std::move(second_floor));
 
-			std::cout<<"\nWhen the EvilCat fainted, a hidden stair appeared!\n"
+			std::cout<<"\nWhen the EvilCat fainted, a hidden door appeared!\n"
 					<<"You have now access to the second floor of the mansion!" <<std::endl;
 
 		}
@@ -477,7 +479,7 @@ void TheGame::stage_2(){
 			this->put_room(std::move(cat_cafe));
 
 			std::cout<<"\nYou heard a strange sound echoing inside the mansion!\n"
-					<<"Could it perhaps be connected with this key we just got?" <<std::endl;
+					<<"Could it perhaps be connected with the key "<< Hero_->name() <<" just got?" <<std::endl;
 		}
 		//Stage 2 completed!
 		if (current_room_->name() == "Cat Cafe"){

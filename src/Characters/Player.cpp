@@ -12,7 +12,7 @@ Player::Player(std::string name){
 	current_HP_=100;
 	max_HP_=100;
 	ATK_=5;
-	DEF_=20;
+	DEF_=0;
 	do_battle = false;
 	std::unique_ptr<Inventory> inv(new Inventory);
 	this->inventory = std::move(inv);
@@ -33,11 +33,18 @@ int Player::attack() {
 	std::cout<<"Hit enter to roll the dice! ";
 	std::cin.ignore();
 	int dice_toss = 1 + rand() % 6; //1 to 6
-	std::cout<<"\nThe dice shows "<<dice_toss<<" points!"<<std::endl;
-	int power = ATK_ + dice_toss;
+	std::cout<<"\nThe dice shows "<<dice_toss<<( (dice_toss == 1) ? " point!" : " points!" )<<std::endl;
+	int power = this->get_attack_stat() + dice_toss;
 	if (RH_) power+= RH_->getATK();
 	if (LH_) power+= LH_->getATK();
 	return power;
+}
+
+int Player::defense() const{
+	int def = this->get_defense_stat();
+	if (RH_) def+= RH_->getDEF();
+	if (LH_) def+= LH_->getDEF();
+	return def;
 }
 
 std::unique_ptr<Inventory> Player::talk(){
@@ -49,8 +56,8 @@ void Player::stats() const{
 
 	std::cout<<this->type()<<" "<<this->name()<<std::endl;
 	std::cout<<"HP: "<<current_HP_<<"/"<<max_HP_<<std::endl;
-	std::cout<<"ATK: "<<ATK_ + ( (RH_ != NULL) ? RH_->getATK() : 0 )  + ( (LH_ != NULL) ? LH_->getATK() : 0 ) <<std::endl;
-	std::cout<<"DEF: "<<DEF_ + ( (RH_ != NULL) ? RH_->getDEF() : 0 )  + ( (LH_ != NULL) ? LH_->getDEF() : 0 ) <<std::endl;
+	std::cout<<"ATK: "<<this->get_attack_stat() + ( (RH_ != NULL) ? RH_->getATK() : 0 )  + ( (LH_ != NULL) ? LH_->getATK() : 0 ) <<std::endl;
+	std::cout<<"DEF: "<<this->get_defense_stat() + ( (RH_ != NULL) ? RH_->getDEF() : 0 )  + ( (LH_ != NULL) ? LH_->getDEF() : 0 ) <<std::endl;
 	std::cout<<"Right hand: " << ( (RH_ != NULL) ? RH_->name() : "-" )<<std::endl;
 	std::cout<<"Left hand: "  << ( (LH_ != NULL) ? LH_->name() : "-" )<<std::endl;
 }
@@ -110,12 +117,12 @@ void Player::fight(std::unique_ptr<Character>& actor){
 		int damage;
 		if (random_start == 1){
 			std::cout<< this->name() <<" attacks "<< actor->name() <<" first!" <<std::endl;
-			damage = this->attack();
+			damage = this->attack() - actor->defense();
 			actor->takeDamage(damage);
 			std::cout<< this->name() <<" inflicted "<< actor->name() <<
 					" with "<< damage << " damage-points!" <<std::endl;
 			if (actor->current_HP() > 0){
-				damage = actor->attack();
+				damage = actor->attack() - this->defense();
 				this->takeDamage(damage);
 				std::cout<< actor->name() <<" inflicted "<< this->name() <<
 						" with "<< damage << " damage-points!" <<std::endl;
@@ -123,12 +130,12 @@ void Player::fight(std::unique_ptr<Character>& actor){
 		}
 		else if (random_start == 0){
 			std::cout<<actor->name() <<" attacks first!" <<std::endl;
-			damage = actor->attack();
+			damage = actor->attack() - this->defense();
 			this->takeDamage(damage);
 			std::cout<< actor->name() <<" inflicted "<< this->name() <<
 					" with "<< damage << " damage-points!" <<std::endl;
 			if (this->current_HP() > 0){
-				damage = this->attack();
+				damage = this->attack() - actor->defense();
 				actor->takeDamage(damage);
 				std::cout<< this->name() <<" inflicted "<< actor->name() <<
 						" with "<< damage << " damage-points!" <<std::endl;

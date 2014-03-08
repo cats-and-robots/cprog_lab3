@@ -8,7 +8,7 @@
 #include "EvilCat.hpp"
 
 EvilCat::EvilCat(std::string name):
-Cat::Cat(name, 25, 2, 1){}
+Cat::Cat(name, 25, 2, 0){}
 
 EvilCat::EvilCat(std::string name,int hp , int atk , int def):
 Cat::Cat(name, hp, atk, def){}
@@ -24,8 +24,8 @@ int EvilCat::attack(){
 	std::cout<<"Hit enter to let "<<this->name()<<" roll the dice! ";
 	std::cin.ignore();
 	int dice_toss = 1 + rand() % 6; //1 to 6
-	std::cout<<"\nThe dice shows "<<dice_toss<<" points!"<<std::endl;
-	int power = ATK_+dice_toss;
+	std::cout<<"\nThe dice shows "<<dice_toss<<( (dice_toss == 1) ? " point!" : " points!" )<<std::endl;
+	int power = this->get_attack_stat()+dice_toss;
 	return power;
 }
 
